@@ -19,6 +19,26 @@ header {
 	padding: 20px 0;
 }
 
+.modal-overlay {
+	width: 100%;
+	min-height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	z-index: 1000;
+	background-color: #0000003f;
+	justify-content: center;
+	align-items: center;
+	.modal {
+		background-color: $tertiary-color;
+		max-width: 80%;
+		min-width: 50%;
+		box-shadow: 0 15px 50px #00000060;
+		display: flex;
+	}
+}
+
 main {
 	display: flex;
 	flex: 1;
@@ -41,6 +61,20 @@ section.content {
 	background-color: #fff;
 	.tasks {
 		list-style: none;
+	}
+}
+
+datalist#categories {
+	display: block;
+	position: absolute;
+	background-color: #fff;
+	overflow-y: auto;
+	max-height: 10rem;
+
+	option {
+		background-color: #fff;
+		cursor: pointer;
+		border: 1px solid black;
 	}
 }
 

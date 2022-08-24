@@ -6,7 +6,6 @@ export const Main = () => {
 	return (
 		<section className='content'>
 			<Tasks />
-			<CreateTask />
 		</section>
 	);
 };

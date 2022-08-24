@@ -4,38 +4,82 @@ import { useCategories } from '../hooks/useCategories';
 export const CreateTask = () => {
 	const { loading, categories } = useCategories();
 
-	const inputCategories = (
+	let currentFocus = -1;
+
+	const removeActive = (x) => {
+		for (const el of x) {
+			el.classList.remove('active');
+		}
+	};
+
+	const addActive = (x) => {
+		if (!x) return false;
+
+		removeActive(x);
+
+		if (currentFocus >= x.length) currentFocus = 0;
+		if (currentFocus < 0) currentFocus = x.length - 1;
+
+		x[currentFocus].classList.add('active');
+	};
+
+	const inputOnInput = (e, datalist) => {
+		let text = e.target.value.toUpperCase();
+		for (const opt of datalist.options) {
+			if (opt.value.toUpperCase().indexOf(text) > -1) {
+				opt.style.display = 'block';
+			} else {
+				opt.style.display = 'none';
+			}
+		}
+	};
+	const inputOnKeyDown = (e) => {
+		if (e.keyCode === 40) {
+			currentFocus++;
+			addActive(datalist.options);
+		}
+		if (e.keyCode === 38) {
+			currentFocus--;
+			addActive(datalist.options);
+		}
+		if (e.keyCode === 13) {
+			e.preventDefault();
+			if (currentFocus > -1) {
+				if (datalist.options) datalist.options[currentFocus].click();
+			}
+		}
+	};
+
+	const inputCategory = (
 		<input
-			autocomplete='off'
+			autoComplete='off'
 			role='combobox'
 			list=''
 			id='category'
 			name='category'
 			placeholder='Category'
-			onFocus={(e) => categoryFocus(e)}
+			onInput={(e) => inputOnInput(e, document.querySelector('#categories'))}
+			onKeyDown={(e) => inputOnKeyDown(e)}
 		/>
 	);
 
-	const optCategories = loading ? (
-		<option>Loading...</option>
-	) : (
-		categories.map((category) => (
-			<option key={category._id} value={category._id} onClick={() => {}}>
-				{category.title}
-			</option>
-		))
-	);
-
-	const categoryDatalist = (
+	const datalistCategory = (
 		<datalist id='categories' role='listbox'>
-			<option value=''></option>
-			{optCategories}
+			{loading ? (
+				<option>Loading...</option>
+			) : (
+				categories.map((category) => (
+					<option
+						key={category._id}
+						value={category.title}
+						onClick={() => (inputCategory.value = category.title)}
+					>
+						{category.title}
+					</option>
+				))
+			)}
 		</datalist>
 	);
-
-	const categoryFocus = (_e) => {
-		$('').style.display = 'block';
-	};
 
 	return (
 		<>
@@ -47,9 +91,9 @@ export const CreateTask = () => {
 					id='description'
 					placeholder='Description'
 				/>
-				{inputCategories}
+				{inputCategory}
+				{datalistCategory}
 			</form>
-			{categoryDatalist}
 		</>
 	);
 };
