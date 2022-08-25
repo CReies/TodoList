@@ -2,12 +2,17 @@ $primary-color: #2552ac;
 $secondary-color: #769ff2;
 $tertiary-color: #f1f4f6;
 
+/* General styles */
 #root {
 	width: 100%;
 	height: 100%;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+}
+
+button {
+	cursor: pointer;
 }
 
 header {
@@ -17,26 +22,6 @@ header {
 	background-color: $primary-color;
 	color: $tertiary-color;
 	padding: 20px 0;
-}
-
-.modal-overlay {
-	width: 100%;
-	min-height: 100vh;
-	position: fixed;
-	top: 0;
-	left: 0;
-	display: flex;
-	z-index: 1000;
-	background-color: #0000003f;
-	justify-content: center;
-	align-items: center;
-	.modal {
-		background-color: $tertiary-color;
-		max-width: 80%;
-		min-width: 50%;
-		box-shadow: 0 15px 50px #00000060;
-		display: flex;
-	}
 }
 
 main {
@@ -53,31 +38,6 @@ aside {
 	color: #000;
 }
 
-section.content {
-	display: flex;
-	flex: 5;
-	padding: 40px;
-	flex-direction: column;
-	background-color: #fff;
-	.tasks {
-		list-style: none;
-	}
-}
-
-datalist#categories {
-	display: block;
-	position: absolute;
-	background-color: #fff;
-	overflow-y: auto;
-	max-height: 10rem;
-
-	option {
-		background-color: #fff;
-		cursor: pointer;
-		border: 1px solid black;
-	}
-}
-
 footer {
 	background-color: #fff;
 	display: flex;
@@ -85,4 +45,142 @@ footer {
 	align-items: center;
 	padding: 0 20px;
 	border-top: 1px solid $tertiary-color;
+}
+
+/* Main Content */
+section.content {
+	display: flex;
+	flex: 5;
+	padding: 40px;
+	flex-direction: column;
+	background-color: #fff;
+
+	.tasks {
+		list-style: none;
+	}
+}
+
+/* Modal */
+.modal-overlay {
+	width: 100%;
+	min-height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	z-index: 1000;
+	background-color: #0000003f;
+	justify-content: center;
+	align-items: center;
+
+	.modal {
+		background-color: $tertiary-color;
+		max-width: 80%;
+		min-width: 50%;
+		box-shadow: 0 15px 50px #00000060;
+		display: flex;
+		padding: 30px 30px 100px;
+		flex-direction: column;
+		color: #000;
+
+		.modal-header {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 50px;
+
+			.modal-close {
+				background-color: inherit;
+				border: none;
+			}
+		}
+	}
+}
+
+/* Create Task Form */
+form#createTask {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	.form-group {
+		position: relative;
+		margin: 20px 0;
+
+		label {
+			position: absolute;
+			pointer-events: none;
+			left: 5px;
+			top: -20px;
+			font-size: 14px;
+			color: #5264ae;
+		}
+
+		.bar {
+			position: relative;
+			display: block;
+			width: 100%;
+
+			&::before {
+				left: 50%;
+			}
+
+			&::after {
+				right: 50%;
+			}
+
+			&::before,
+			&::after {
+				content: '';
+				height: 2px;
+				width: 0;
+				bottom: 1px;
+				position: absolute;
+				background: #5264ae;
+				transition: 0.2s ease all;
+				-moz-transition: 0.2s ease all;
+				-webkit-transition: 0.2s ease all;
+			}
+		}
+
+		textarea {
+			resize: vertical;
+			max-height: 300px;
+		}
+
+		input,
+		textarea {
+			font-size: 16px;
+			padding: 10px 10px 10px 5px;
+			display: block;
+			width: 100%;
+			border: none;
+			border-bottom: 1px solid #515151;
+			background: transparent;
+			box-sizing: border-box;
+
+			&:focus {
+				outline: none;
+			}
+
+			&:focus ~ .bar::before,
+			&:focus ~ .bar::after {
+				width: 50%;
+			}
+		}
+	}
+}
+
+/* Category Input */
+datalist#categories {
+	overflow-y: auto;
+	max-height: 10rem;
+	position: absolute;
+	display: block;
+	width: 100%;
+
+	option {
+		background-color: transparent;
+		cursor: pointer;
+		border-bottom: 1px solid #515151;
+	}
 }

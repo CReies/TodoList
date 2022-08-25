@@ -50,16 +50,25 @@ export const CreateTask = () => {
 		}
 	};
 
+	const inputOnFocus = (datalist) => {
+		datalist.style.display = 'block';
+	};
+
+	const inputOnBlur = (datalist) => {
+		datalist.style.display = 'none';
+	};
+
 	const inputCategory = (
 		<input
 			autoComplete='off'
 			role='combobox'
 			list=''
-			id='category'
+			id='taskCategory'
 			name='category'
-			placeholder='Category'
 			onInput={(e) => inputOnInput(e, document.querySelector('#categories'))}
 			onKeyDown={(e) => inputOnKeyDown(e)}
+			onFocus={() => inputOnFocus(document.querySelector('#categories'))}
+			onBlur={() => inputOnBlur(document.querySelector('#categories'))}
 		/>
 	);
 
@@ -83,16 +92,25 @@ export const CreateTask = () => {
 
 	return (
 		<>
-			<form>
-				<input type='text' name='title' id='title' placeholder='Title' />
-				<input
-					type='text'
-					name='description'
-					id='description'
-					placeholder='Description'
-				/>
-				{inputCategory}
-				{datalistCategory}
+			<form id='createTask'>
+				<div className='form-group'>
+					<input type='text' name='title' id='taskTitle' required />
+					<span className='bar'></span>
+					<label htmlFor='title'>Title</label>
+				</div>
+
+				<div className='form-group'>
+					<textarea name='description' id='taskDescription' required='' />
+					<span className='bar'></span>
+					<label htmlFor='description'>Description</label>
+				</div>
+
+				<div className='form-group'>
+					{inputCategory}
+					<span className='bar'></span>
+					<label htmlFor='category'>Category</label>
+					{datalistCategory}
+				</div>
 			</form>
 		</>
 	);

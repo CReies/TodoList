@@ -8,7 +8,12 @@ export const Modal = ({ content, visible, changeVisible, title }) => {
 					{title && (
 						<div className='modal-header'>
 							<h3>{title}</h3>
-							<button onClick={() => changeVisible(false)}>X</button>
+							<button
+								className='modal-close'
+								onClick={() => changeVisible(false)}
+							>
+								x
+							</button>
 						</div>
 					)}
 					<div className='modal-content'>{content}</div>
