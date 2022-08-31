@@ -7,7 +7,7 @@ export const Modal = ({ content, visible, changeVisible, title }) => {
 				<div className={`modal showShadow`}>
 					{title && (
 						<div className='modal-header'>
-							<h3>{title}</h3>
+							<h2>{title}</h2>
 							<button
 								className='modal-close'
 								onClick={() => changeVisible(false)}

@@ -44,7 +44,7 @@ export const Tasks = ({ modalVisible, setModalVisible }) => {
 			<Modal
 				visible={modalVisible}
 				changeVisible={setModalVisible}
-				title='Test'
+				title='New Task'
 				content={
 					<CreateTask
 						closeModal={() => setModalVisible(false)}
