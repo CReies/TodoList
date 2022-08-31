@@ -1,10 +1,6 @@
-import { React, useState } from 'react';
-import { Modal } from './Modal';
-import { CreateTask } from './CreateTask';
+import React from 'react';
 
-export const Header = () => {
-	const [modalVisible, setModalVisible] = useState(false);
-
+export const Header = ({ setModalVisible }) => {
 	return (
 		<header>
 			<input type='text' name='search' id='search' placeholder='Search' />
@@ -15,12 +11,6 @@ export const Header = () => {
 			>
 				+
 			</button>
-			<Modal
-				visible={modalVisible}
-				changeVisible={setModalVisible}
-				title='Test'
-				content={<CreateTask />}
-			/>
 		</header>
 	);
 };

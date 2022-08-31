@@ -1,116 +1,108 @@
-import React from 'react';
-import { useCategories } from '../hooks/useCategories';
+import { useEffect } from 'react';
+import { API_URL } from '../.env/config';
+import { useFetchData } from '../hooks/useFetchData';
 
-export const CreateTask = () => {
-	const { loading, categories } = useCategories();
+export const CreateTask = ({ closeModal, taskState, postMethod }) => {
+	const [task, setTask] = taskState;
 
-	let currentFocus = -1;
+	const url = `${API_URL}/categories`;
+	const [categoriesGet, categoriesGetMethod] = useFetchData({
+		url,
+		name: 'categories',
+	});
 
-	const removeActive = (x) => {
-		for (const el of x) {
-			el.classList.remove('active');
-		}
+	const { data, isLoading } = categoriesGet;
+
+	useEffect(() => {
+		categoriesGetMethod();
+	}, []);
+
+	useEffect(() => {
+		setTask((prevState) => ({
+			...prevState,
+			category: document.querySelector('#categoriesSelect').value,
+		}));
+		console.log(task.category);
+		console.log(document.querySelector('#categoriesSelect').value);
+		console.log(isLoading);
+	}, [data]);
+
+	const handleOnChange = (e) => {
+		const target = e.target;
+		setTask((prevState) => ({
+			...prevState,
+			[target.name]: e.target.value,
+		}));
 	};
 
-	const addActive = (x) => {
-		if (!x) return false;
-
-		removeActive(x);
-
-		if (currentFocus >= x.length) currentFocus = 0;
-		if (currentFocus < 0) currentFocus = x.length - 1;
-
-		x[currentFocus].classList.add('active');
-	};
-
-	const inputOnInput = (e, datalist) => {
-		let text = e.target.value.toUpperCase();
-		for (const opt of datalist.options) {
-			if (opt.value.toUpperCase().indexOf(text) > -1) {
-				opt.style.display = 'block';
-			} else {
-				opt.style.display = 'none';
-			}
-		}
-	};
-	const inputOnKeyDown = (e) => {
-		if (e.keyCode === 40) {
-			currentFocus++;
-			addActive(datalist.options);
-		}
-		if (e.keyCode === 38) {
-			currentFocus--;
-			addActive(datalist.options);
-		}
-		if (e.keyCode === 13) {
-			e.preventDefault();
-			if (currentFocus > -1) {
-				if (datalist.options) datalist.options[currentFocus].click();
-			}
-		}
-	};
-
-	const inputOnFocus = (datalist) => {
-		datalist.style.display = 'block';
-	};
-
-	const inputOnBlur = (datalist) => {
-		datalist.style.display = 'none';
-	};
-
-	const inputCategory = (
-		<input
-			autoComplete='off'
-			role='combobox'
-			list=''
-			id='taskCategory'
+	const selectCategory = (
+		<select
 			name='category'
-			onInput={(e) => inputOnInput(e, document.querySelector('#categories'))}
-			onKeyDown={(e) => inputOnKeyDown(e)}
-			onFocus={() => inputOnFocus(document.querySelector('#categories'))}
-			onBlur={() => inputOnBlur(document.querySelector('#categories'))}
-		/>
-	);
-
-	const datalistCategory = (
-		<datalist id='categories' role='listbox'>
-			{loading ? (
-				<option>Loading...</option>
+			id='categoriesSelect'
+			value={task.category}
+			onChange={(e) => handleOnChange(e)}
+		>
+			{isLoading ? (
+				<option value='Loading'>Loading</option>
 			) : (
-				categories.map((category) => (
-					<option
-						key={category._id}
-						value={category.title}
-						onClick={() => (inputCategory.value = category.title)}
-					>
+				data.map((category) => (
+					<option key={category.id} value={category.id}>
 						{category.title}
 					</option>
 				))
 			)}
-		</datalist>
+		</select>
 	);
+
+	const submitCreateTask = (e) => {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const formDataJSON = {};
+
+		formData.forEach((value, key) => (formDataJSON[key] = value));
+
+		postMethod();
+		closeModal();
+	};
 
 	return (
 		<>
-			<form id='createTask'>
+			<form id='createTask' onSubmit={(e) => submitCreateTask(e)}>
 				<div className='form-group'>
-					<input type='text' name='title' id='taskTitle' required />
+					<input
+						type='text'
+						name='title'
+						id='taskTitle'
+						required
+						value={task.title}
+						onChange={(e) => handleOnChange(e)}
+						autoComplete='off'
+					/>
 					<span className='bar'></span>
 					<label htmlFor='title'>Title</label>
 				</div>
 
 				<div className='form-group'>
-					<textarea name='description' id='taskDescription' required='' />
+					<textarea
+						name='description'
+						id='taskDescription'
+						required=''
+						value={task.description}
+						onChange={(e) => handleOnChange(e)}
+					/>
 					<span className='bar'></span>
 					<label htmlFor='description'>Description</label>
 				</div>
 
 				<div className='form-group'>
-					{inputCategory}
+					{selectCategory}
 					<span className='bar'></span>
 					<label htmlFor='category'>Category</label>
-					{datalistCategory}
 				</div>
+
+				<button type='submit' className='btn'>
+					Create
+				</button>
 			</form>
 		</>
 	);

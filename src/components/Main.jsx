@@ -1,11 +1,10 @@
 import React from 'react';
-import { CreateTask } from './CreateTask';
 import { Tasks } from './Tasks';
 
-export const Main = () => {
+export const Main = ({ modalVisible, setModalVisible }) => {
 	return (
 		<section className='content'>
-			<Tasks />
+			<Tasks modalVisible={modalVisible} setModalVisible={setModalVisible} />
 		</section>
 	);
 };
