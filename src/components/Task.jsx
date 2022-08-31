@@ -1,14 +1,19 @@
 import React from 'react';
 
 export const Task = ({ task }) => {
-	const { _id, title, description, category, completed, createdAt } = task;
+	const { id, title, description, category, completed, createdAt } = task;
 	return (
-		<li>
-			<h3>{title}</h3>
-			<p>{description}</p>
-			<p>{category}</p>
-			<p>{completed}</p>
-			<p>{createdAt}</p>
+		<li className='task'>
+			<div className='complete-task'>
+				<input type='checkbox' name='complete' id={`completeTask-${id}`} />
+			</div>
+			<div className='task-content'>
+				<div className='title'>{title}</div>
+				<div className='description'>{description}</div>
+			</div>
+			<div className='delete-task'>
+				<button>{'<-'}</button>
+			</div>
 		</li>
 	);
 };
