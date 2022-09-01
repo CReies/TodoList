@@ -43,6 +43,7 @@ main {
 
 aside {
 	display: flex;
+	flex-direction: column;
 	flex: 1;
 	background-color: $tertiary-color;
 	padding: 20px;
