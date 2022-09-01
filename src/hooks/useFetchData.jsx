@@ -1,12 +1,20 @@
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 
+/**
+ * Fetches to an api using axios
+ *
+ * @returns An array with the response and the method to execute the fetch
+ */
 export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
+	// State for the response
 	const [res, setRes] = useState({ data: [], error: null, isLoading: false });
 	const resLS = localStorage.getItem(name);
 
+	// Method to fetch the api
 	const callAPI = useCallback(() => {
 		setRes((prevstate) => ({ ...prevstate, isLoading: true }));
+
 		const options = { method, url, data, headers };
 		axios.request(options).then((response) => {
 			setRes((prevstate) => ({
@@ -14,16 +22,19 @@ export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
 				data: response.data,
 				isLoading: false,
 			}));
+
 			if (method === 'post') {
 				console.log('first');
 				console.log(name);
 				localStorage.removeItem(name);
 				return;
 			}
+
 			localStorage.setItem(name, JSON.stringify(response.data));
 		});
 	}, [method, url, data, headers, name]);
 
+	// Method to get the data from local storage
 	const getDataFromLS = () => {
 		setRes((prevstate) => ({
 			...prevstate,

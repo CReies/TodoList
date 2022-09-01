@@ -2,9 +2,16 @@ import { useEffect } from 'react';
 import { API_URL } from '../.env/config';
 import { useFetchData } from '../hooks/useFetchData';
 
+/**
+ * Create Task Form
+ *
+ * @returns Create Task Form
+ */
 export const CreateTask = ({ closeModal, taskState, postMethod }) => {
+	// Task data entered in the form
 	const [task, setTask] = taskState;
 
+	// URL that will be fetched
 	const url = `${API_URL}/categories`;
 	const [categoriesGet, categoriesGetMethod] = useFetchData({
 		url,
@@ -13,10 +20,12 @@ export const CreateTask = ({ closeModal, taskState, postMethod }) => {
 
 	const { data, isLoading } = categoriesGet;
 
+	// When the component is rendered executes the getMethod
 	useEffect(() => {
 		categoriesGetMethod();
 	}, []);
 
+	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
 	useEffect(() => {
 		setTask((prevState) => ({
 			...prevState,
@@ -25,8 +34,9 @@ export const CreateTask = ({ closeModal, taskState, postMethod }) => {
 		console.log(task.category);
 		console.log(document.querySelector('#categoriesSelect').value);
 		console.log(isLoading);
-	}, [data]);
+	}, [categoriesGet]);
 
+	// Dynamically changes the state when a input is modified
 	const handleOnChange = (e) => {
 		const target = e.target;
 		setTask((prevState) => ({
@@ -35,6 +45,7 @@ export const CreateTask = ({ closeModal, taskState, postMethod }) => {
 		}));
 	};
 
+	// <select> input for the category
 	const selectCategory = (
 		<select
 			name='category'
@@ -54,17 +65,14 @@ export const CreateTask = ({ closeModal, taskState, postMethod }) => {
 		</select>
 	);
 
+	// Posts the task
 	const submitCreateTask = (e) => {
 		e.preventDefault();
-		const formData = new FormData(e.target);
-		const formDataJSON = {};
-
-		formData.forEach((value, key) => (formDataJSON[key] = value));
-
 		postMethod();
 		closeModal();
 	};
 
+	// Final Render
 	return (
 		<>
 			<form id='createTask' onSubmit={(e) => submitCreateTask(e)}>

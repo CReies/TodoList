@@ -5,18 +5,25 @@ import { CreateTask } from './CreateTask';
 import { useFetchData } from '../hooks/useFetchData';
 import { API_URL } from '../.env/config';
 
+/**
+ * @returns Tasks Component
+ */
 export const Tasks = ({ modalVisible, setModalVisible }) => {
-	const url = `${API_URL}/tasks`;
+	// New task state
+	// This will be passed to the create task form
 	const [newTask, setNewTask] = useState({
 		title: '',
 		description: '',
 		category: '',
 	});
 
+	// URL that will be fetched
+	const url = `${API_URL}/tasks`;
 	const [tasksGet, taskGetMethod] = useFetchData({
 		url,
 		name: 'tasks',
 	});
+
 	const [taskPost, taskPostMethod] = useFetchData({
 		name: 'tasks',
 		method: 'post',
@@ -30,6 +37,7 @@ export const Tasks = ({ modalVisible, setModalVisible }) => {
 
 	const { data, isLoading } = tasksGet;
 
+	// When the post method is executed, executes the get method again
 	useEffect(() => {
 		taskGetMethod();
 	}, [taskPost]);
@@ -39,6 +47,8 @@ export const Tasks = ({ modalVisible, setModalVisible }) => {
 	) : (
 		data.map((task) => <Task key={task.id} task={task} />)
 	);
+
+	// Final Render
 	return (
 		<>
 			<Modal

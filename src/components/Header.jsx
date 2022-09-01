@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * @returns Header Component
+ */
 export const Header = ({ setModalVisible }) => {
 	return (
 		<header>

@@ -1,7 +1,10 @@
 import React from 'react';
 
+/**
+ * @returns Task Component
+ */
 export const Task = ({ task }) => {
-	const { id, title, description, category, completed, createdAt } = task;
+	const { id, title, description } = task;
 	return (
 		<li className='task'>
 			<div className='complete-task'>

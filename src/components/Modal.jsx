@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * @returns Modal Component
+ */
 export const Modal = ({ content, visible, changeVisible, title }) => {
 	return (
 		visible && (
