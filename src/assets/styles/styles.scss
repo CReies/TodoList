@@ -1,11 +1,31 @@
 $primary-color: #2552ac;
 $secondary-color: #769ff2;
 $tertiary-color: #f1f4f6;
+$border: solid 1px;
+$border-light: #d3d3d3 $border;
+$border-dark: #515151 $border;
+
+@mixin shadowed($scale) {
+	box-shadow: calc($scale * 3px) calc($scale * 3px) calc($scale * 6px) #c5c5c5,
+		calc($scale * -3px) calc($scale * -3px) calc($scale * 6px) #ffffff;
+
+	&:active {
+		box-shadow: inset calc($scale * 2px) calc($scale * 2px) 12px #c5c5c5,
+			inset calc($scale * -2px) calc($scale * -2px) calc($scale * 6px) #fff;
+		border: $border-dark;
+	}
+
+	&:hover {
+		box-shadow: inset calc($scale * 1px) calc($scale * 1px) calc($scale * 3px)
+				#c5c5c5,
+			inset calc($scale * -1px) calc($scale * -1px) calc($scale * 3px) #fff;
+	}
+}
 
 /* General styles */
 body {
 	font-family: 'Poppins', sans-serif;
-	font-size: 16px;
+	font-size: 1rem;
 	line-height: 1.5;
 }
 
@@ -32,7 +52,7 @@ header {
 	align-items: center;
 	background-color: $primary-color;
 	color: $tertiary-color;
-	padding: 20px 0;
+	padding: 1.25em 0;
 }
 
 main {
@@ -46,7 +66,7 @@ aside {
 	flex-direction: column;
 	flex: 1;
 	background-color: $tertiary-color;
-	padding: 20px;
+	padding: 1.25em;
 	color: #000;
 }
 
@@ -55,8 +75,8 @@ footer {
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
-	padding: 0 20px;
-	border-top: 1px solid $tertiary-color;
+	padding: 0 1.25em;
+	border-top: $border-light;
 }
 
 /**************************************************/
@@ -65,7 +85,7 @@ footer {
 section.content {
 	display: flex;
 	flex: 5;
-	padding: 40px;
+	padding: 2.5em;
 	flex-direction: column;
 	background-color: #fff;
 
@@ -93,15 +113,15 @@ section.content {
 		min-width: 50%;
 		box-shadow: 0 15px 50px #00000060;
 		display: flex;
-		padding: 30px 30px 100px;
+		padding: 1.8em 1.8em 6em;
 		flex-direction: column;
 		color: #000;
 
 		.modal-header {
 			display: flex;
 			justify-content: space-between;
-			border-bottom: #d3d3d3 1px solid;
-			margin-bottom: 50px;
+			border-bottom: $border-light;
+			margin-bottom: 3em;
 
 			.modal-close {
 				background-color: inherit;
@@ -121,15 +141,15 @@ form#createTask {
 
 	.form-group {
 		position: relative;
-		margin: 20px 0;
+		margin: 1.25em 0;
 
 		label {
 			position: absolute;
 			pointer-events: none;
-			left: 5px;
-			top: -20px;
-			font-size: 14px;
-			color: #5264ae;
+			left: 0.3em;
+			top: -1.25em;
+			font-size: 0.9rem;
+			color: $secondary-color;
 		}
 
 		.bar {
@@ -152,7 +172,7 @@ form#createTask {
 				width: 0;
 				bottom: 1px;
 				position: absolute;
-				background: #5264ae;
+				background: $secondary-color;
 				transition: 0.2s ease all;
 				-moz-transition: 0.2s ease all;
 				-webkit-transition: 0.2s ease all;
@@ -161,18 +181,18 @@ form#createTask {
 
 		textarea {
 			resize: vertical;
-			max-height: 300px;
+			max-height: 18.75em;
 		}
 
 		input,
 		textarea,
 		select {
-			font-size: 16px;
-			padding: 10px 10px 10px 5px;
+			font-size: 1rem;
+			padding: 0.6em 0.6em 0.6em 0.3em;
 			display: block;
 			width: 100%;
 			border: none;
-			border-bottom: 1px solid #515151;
+			border-bottom: $border-dark;
 			background: transparent;
 			box-sizing: border-box;
 
@@ -188,26 +208,15 @@ form#createTask {
 	}
 
 	button.btn {
-		color: #090909;
+		color: #000;
 		padding: 0.7em 1.7em;
-		font-size: 18px;
+		font-size: 1.2rem;
 		border-radius: 0.5em;
 		background: $tertiary-color;
-		box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
 		width: fit-content;
 		align-self: flex-end;
-		border: 1px transparent solid;
-		transition: 5s;
-
-		&:active {
-			box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #fff;
-			border: 1px solid #515151;
-		}
-
-		&:hover {
-			box-shadow: inset 2px 2px 6px #c5c5c5, inset -2px -2px 6px #fff;
-			transition: 0s;
-		}
+		border: transparent $border;
+		@include shadowed(2);
 	}
 }
 
@@ -223,7 +232,7 @@ datalist#categories {
 	option {
 		background-color: transparent;
 		cursor: pointer;
-		border-bottom: 1px solid #515151;
+		border-bottom: $border-dark;
 	}
 }
 /********************************************/
@@ -231,11 +240,11 @@ datalist#categories {
 /* Task List */
 .tasks {
 	width: 60%;
-	margin: 0px auto;
+	margin: 0 auto;
 	li.task {
-		border-bottom: 1px solid #d3d3d3;
-		margin-bottom: 20px;
-		padding: 10px;
+		border-bottom: $border-light;
+		margin-bottom: 1.25em;
+		padding: 0.6em;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -244,19 +253,27 @@ datalist#categories {
 		.delete-task {
 			display: flex;
 			align-items: center;
-			width: 30px;
+			width: 1.9em;
+		}
+
+		.delete-task {
+			button {
+				background-color: $tertiary-color;
+				border: none;
+				@include shadowed(1);
+			}
 		}
 
 		.task-content {
 			flex-direction: column;
 			width: 100%;
 			.title {
-				margin: 2px 0px;
+				margin: 0.2em 0;
 			}
 
 			.description {
-				margin: 0px;
-				font-size: 12px;
+				margin: 0;
+				font-size: 0.75rem;
 				color: #515151;
 			}
 		}
@@ -264,3 +281,42 @@ datalist#categories {
 }
 
 /*****************************************/
+
+/* Aside styles */
+
+aside {
+	.categories {
+		.category {
+			cursor: pointer;
+			padding: 0.6em 1.6em;
+			margin-bottom: 1.25em;
+			border-radius: 0.3em;
+			@include shadowed(1);
+
+			&.active {
+				background-color: $secondary-color;
+				color: wheat;
+			}
+		}
+	}
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 37.5em) {
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 37.5em) {
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 48em) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 62em) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 75em) {
+}
