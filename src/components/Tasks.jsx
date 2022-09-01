@@ -8,7 +8,13 @@ import { API_URL } from '../.env/config';
 /**
  * @returns Tasks Component
  */
-export const Tasks = ({ modalVisible, setModalVisible, categoriesFetch }) => {
+export const Tasks = ({
+	modalVisible,
+	setModalVisible,
+	categoriesFetch,
+	activeCategoryId,
+	search,
+}) => {
 	// New task state
 	// This will be passed to the create task form
 	const [newTask, setNewTask] = useState({
@@ -37,16 +43,26 @@ export const Tasks = ({ modalVisible, setModalVisible, categoriesFetch }) => {
 
 	const { data, isLoading } = tasksGet;
 
+	const filteredTasks = (tasks) =>
+		tasks.map((task) => {
+			if (activeCategoryId !== '' && activeCategoryId !== task.category) return;
+
+			if (
+				search !== '' &&
+				!task.title.includes(search) &&
+				!task.description.includes(search)
+			)
+				return;
+
+			return <Task key={task.id} task={task} />;
+		});
+
 	// When the post method is executed, executes the get method again
 	useEffect(() => {
 		taskGetMethod();
 	}, [taskPost]);
 
-	const tasksRender = isLoading ? (
-		<p>Loading...</p>
-	) : (
-		data.map((task) => <Task key={task.id} task={task} />)
-	);
+	const tasksRender = isLoading ? <p>Loading...</p> : filteredTasks(data);
 
 	// Final Render
 	return (

@@ -11,7 +11,10 @@ export const Categories = ({ categoriesFetch, activeCategoryIdState }) => {
 	}, []);
 
 	const handleClick = (e) => {
-		setActiveCategoryId(e.target.id.split('-')[1]);
+		const categoryId = e.target.id.split('-')[1];
+
+		if (activeCategoryId === categoryId) setActiveCategoryId('');
+		else setActiveCategoryId(categoryId);
 	};
 
 	const categoriesRender = isLoading ? (
@@ -27,5 +30,5 @@ export const Categories = ({ categoriesFetch, activeCategoryIdState }) => {
 		))
 	);
 
-	return categoriesRender;
+	return <div className='categories'>{categoriesRender}</div>;
 };

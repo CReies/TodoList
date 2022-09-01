@@ -10,7 +10,7 @@ import { useFetchData } from './hooks/useFetchData';
 
 const App = () => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [activeCategoryId, setActiveCategoryId] = useState({});
+	const [activeCategoryId, setActiveCategoryId] = useState('');
 	const [search, setSearch] = useState('');
 	const [categoriesGet, categoriesGetMethod] = useFetchData({
 		url: `${API_URL}/categories`,
