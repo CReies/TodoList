@@ -8,7 +8,7 @@ import { API_URL } from '../.env/config';
 /**
  * @returns Tasks Component
  */
-export const Tasks = ({ modalVisible, setModalVisible }) => {
+export const Tasks = ({ modalVisible, setModalVisible, categoriesFetch }) => {
 	// New task state
 	// This will be passed to the create task form
 	const [newTask, setNewTask] = useState({
@@ -60,6 +60,7 @@ export const Tasks = ({ modalVisible, setModalVisible }) => {
 						closeModal={() => setModalVisible(false)}
 						postMethod={taskPostMethod}
 						taskState={[newTask, setNewTask]}
+						categoriesFetch={categoriesFetch}
 					/>
 				}
 			/>

@@ -1,22 +1,20 @@
 import { useEffect } from 'react';
-import { API_URL } from '../.env/config';
-import { useFetchData } from '../hooks/useFetchData';
 
 /**
  * Create Task Form
  *
  * @returns Create Task Form
  */
-export const CreateTask = ({ closeModal, taskState, postMethod }) => {
+export const CreateTask = ({
+	closeModal,
+	taskState,
+	postMethod,
+	categoriesFetch,
+}) => {
 	// Task data entered in the form
 	const [task, setTask] = taskState;
 
-	// URL that will be fetched
-	const url = `${API_URL}/categories`;
-	const [categoriesGet, categoriesGetMethod] = useFetchData({
-		url,
-		name: 'categories',
-	});
+	const [categoriesGet, categoriesGetMethod] = categoriesFetch;
 
 	const { data, isLoading } = categoriesGet;
 
