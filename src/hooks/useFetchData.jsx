@@ -16,6 +16,7 @@ export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
 		setRes((prevstate) => ({ ...prevstate, isLoading: true }));
 
 		const options = { method, url, data, headers };
+		console.log(options);
 		axios.request(options).then((response) => {
 			setRes((prevstate) => ({
 				...prevstate,
@@ -24,9 +25,8 @@ export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
 			}));
 
 			if (method === 'post') {
-				console.log('first');
-				console.log(name);
-				localStorage.removeItem(name);
+				const resLSModified = JSON.parse(resLS).concat(data);
+				localStorage.setItem(name, JSON.stringify(resLSModified));
 				return;
 			}
 
