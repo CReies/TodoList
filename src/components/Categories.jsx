@@ -7,6 +7,7 @@ export const Categories = ({ categoriesFetch, activeCategoryIdState }) => {
 	const { data, isLoading } = categoriesGet;
 
 	useEffect(() => {
+		console.log('categories get');
 		categoriesGetMethod();
 	}, []);
 

@@ -16,7 +16,7 @@ export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
 		setRes((prevstate) => ({ ...prevstate, isLoading: true }));
 
 		const options = { method, url, data, headers };
-		console.log(options);
+
 		axios.request(options).then((response) => {
 			setRes((prevstate) => ({
 				...prevstate,
