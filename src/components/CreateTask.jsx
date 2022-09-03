@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 
 /**
  * Create Task Form
@@ -20,11 +21,12 @@ export const CreateTask = ({
 
 	// When the component is rendered executes the getMethod
 	useEffect(() => {
+		console.log('categories get');
 		categoriesGetMethod();
 	}, []);
 
 	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
-	useEffect(() => {
+	useDidUpdateEffect(() => {
 		setTask((prevState) => ({
 			...prevState,
 			category: document.querySelector('#categoriesSelect').value,

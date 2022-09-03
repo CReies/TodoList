@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { API_URL } from '../.env/config';
+import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { useFetchData } from '../hooks/useFetchData';
 import { CreateTask } from './CreateTask';
 import { Modal } from './Modal';
 import { Task } from './Task';
-import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @returns Tasks Component
@@ -50,6 +51,12 @@ export const Tasks = ({
 		method: 'delete',
 	});
 
+	const handleDelete = (taskId) => {
+		console.log(taskId);
+		setUrlDelete(`${API_URL}/tasks/${taskId}`);
+		console.log(urlDelete);
+	};
+
 	const [modalVisible, setModalVisible] = modalVisibleState;
 
 	const { data, isLoading } = tasksGet;
@@ -67,21 +74,20 @@ export const Tasks = ({
 			)
 				return;
 
-			return (
-				<Task
-					key={task._id}
-					task={task}
-					urlDeleteState={[urlDelete, setUrlDelete]}
-					taskDeleteMethod={taskDeleteMethod}
-				/>
-			);
+			return <Task key={task._id} task={task} handleDelete={handleDelete} />;
 		});
 	};
-
 	// When the post or delete methods are executed, executes the get method again
 	useEffect(() => {
+		console.log('task get');
 		taskGetMethod();
 	}, [taskPost, taskDelete]);
+
+	// When urlDelete change
+	useDidUpdateEffect(() => {
+		console.log('task delete');
+		taskDeleteMethod();
+	}, [urlDelete]);
 
 	const tasksRender = isLoading ? <p>Loading...</p> : filteredTasks(data);
 

@@ -5,13 +5,13 @@ import { Button } from './Button';
 /**
  * @returns Task Component
  */
-export const Task = ({ task,  taskDeleteMethod }) => {
-	const { id, title, description } = task;
+export const Task = ({ task, handleDelete }) => {
+	const { _id, title, description } = task;
 
 	return (
 		<li className='task'>
 			<div className='complete-task'>
-				<input type='checkbox' name='complete' id={`completeTask-${id}`} />
+				<input type='checkbox' name='complete' id={`completeTask-${_id}`} />
 			</div>
 			<div className='task-content'>
 				<div className='title'>{title}</div>
@@ -21,9 +21,9 @@ export const Task = ({ task,  taskDeleteMethod }) => {
 				<Button
 					icon={faTrash}
 					className='delete-task'
-					id={`deleteTask-${id}`}
+					id={`deleteTask-${_id}`}
 					color='red'
-					onClick={taskDeleteMethod}
+					onClick={() => handleDelete(_id)}
 				/>
 			</div>
 		</li>
