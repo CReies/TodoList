@@ -1,7 +1,7 @@
 import 'normalize.css';
+import './assets/styles/styles.scss';
 import { useState } from 'react';
 import { API_URL } from './.env/config';
-import './assets/styles/styles.scss';
 import { Aside } from './components/Aside';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
@@ -29,8 +29,7 @@ const App = () => {
 					activeCategoryIdState={[activeCategoryId, setActiveCategoryId]}
 				/>
 				<Main
-					modalVisible={modalVisible}
-					setModalVisible={setModalVisible}
+					modalVisibleState={[modalVisible, setModalVisible]}
 					activeCategoryId={activeCategoryId}
 					search={search}
 					categoriesFetch={[categoriesGet, categoriesGetMethod]}

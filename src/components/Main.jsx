@@ -5,17 +5,15 @@ import { Tasks } from './Tasks';
  * @returns Main Component
  */
 export const Main = ({
-	modalVisible,
-	setModalVisible,
+	modalVisibleState,
 	categoriesFetch,
 	activeCategoryId,
-	search
+	search,
 }) => {
 	return (
 		<section className='content'>
 			<Tasks
-				modalVisible={modalVisible}
-				setModalVisible={setModalVisible}
+				modalVisibleState={modalVisibleState}
 				categoriesFetch={categoriesFetch}
 				activeCategoryId={activeCategoryId}
 				search={search}
