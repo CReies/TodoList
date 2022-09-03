@@ -25,7 +25,7 @@ export const Categories = ({ categoriesFetch, activeCategoryIdState }) => {
 				category={category}
 				handleClick={handleClick}
 				activeCategoryId={activeCategoryId}
-				key={category.id}
+				key={category._id}
 			/>
 		))
 	);

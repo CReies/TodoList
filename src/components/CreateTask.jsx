@@ -29,9 +29,6 @@ export const CreateTask = ({
 			...prevState,
 			category: document.querySelector('#categoriesSelect').value,
 		}));
-		console.log(task.category);
-		console.log(document.querySelector('#categoriesSelect').value);
-		console.log(isLoading);
 	}, [categoriesGet]);
 
 	// Dynamically changes the state when a input is modified
@@ -55,7 +52,7 @@ export const CreateTask = ({
 				<option value='Loading'>Loading</option>
 			) : (
 				data.map((category) => (
-					<option key={category.id} value={category.id}>
+					<option key={category._id} value={category._id}>
 						{category.title}
 					</option>
 				))
