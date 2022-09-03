@@ -1,10 +1,13 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
+import { Button } from './Button';
 
 /**
  * @returns Task Component
  */
-export const Task = ({ task }) => {
+export const Task = ({ task,  taskDeleteMethod }) => {
 	const { id, title, description } = task;
+
 	return (
 		<li className='task'>
 			<div className='complete-task'>
@@ -15,7 +18,13 @@ export const Task = ({ task }) => {
 				<div className='description'>{description}</div>
 			</div>
 			<div className='delete-task'>
-				<button>{'<-'}</button>
+				<Button
+					icon={faTrash}
+					className='delete-task'
+					id={`deleteTask-${id}`}
+					color='red'
+					onClick={taskDeleteMethod}
+				/>
 			</div>
 		</li>
 	);

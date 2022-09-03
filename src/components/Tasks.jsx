@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Task } from './Task';
-import { Modal } from './Modal';
-import { CreateTask } from './CreateTask';
-import { useFetchData } from '../hooks/useFetchData';
 import { API_URL } from '../.env/config';
+import { useFetchData } from '../hooks/useFetchData';
+import { CreateTask } from './CreateTask';
+import { Modal } from './Modal';
+import { Task } from './Task';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @returns Tasks Component
  */
 export const Tasks = ({
-	modalVisible,
-	setModalVisible,
+	modalVisibleState,
 	categoriesFetch,
 	activeCategoryId,
 	search,
@@ -23,28 +23,41 @@ export const Tasks = ({
 		category: '',
 	});
 
-	// URL that will be fetched
-	const url = `${API_URL}/tasks`;
+	const [urlDelete, setUrlDelete] = useState('');
+
+	// Get method
 	const [tasksGet, taskGetMethod] = useFetchData({
-		url,
+		url: `${API_URL}/tasks`,
 		name: 'tasks',
 	});
 
+	// Post method
 	const [taskPost, taskPostMethod] = useFetchData({
 		name: 'tasks',
 		method: 'post',
-		url,
+		url: `${API_URL}/tasks`,
 		data: {
+			_id: uuidv4(),
 			title: newTask.title,
 			description: newTask.description,
 			category: newTask.category,
 		},
 	});
 
+	// Delete method
+	const [taskDelete, taskDeleteMethod] = useFetchData({
+		url: urlDelete,
+		method: 'delete',
+	});
+
+	const [modalVisible, setModalVisible] = modalVisibleState;
+
 	const { data, isLoading } = tasksGet;
 
-	const filteredTasks = (tasks) =>
-		tasks.map((task) => {
+	const filteredTasks = (tasks) => {
+		if (!Array.isArray(tasks)) return tasks;
+
+		return tasks.map((task) => {
 			if (activeCategoryId !== '' && activeCategoryId !== task.category) return;
 
 			if (
@@ -54,13 +67,21 @@ export const Tasks = ({
 			)
 				return;
 
-			return <Task key={task.id} task={task} />;
+			return (
+				<Task
+					key={task._id}
+					task={task}
+					urlDeleteState={[urlDelete, setUrlDelete]}
+					taskDeleteMethod={taskDeleteMethod}
+				/>
+			);
 		});
+	};
 
-	// When the post method is executed, executes the get method again
+	// When the post or delete methods are executed, executes the get method again
 	useEffect(() => {
 		taskGetMethod();
-	}, [taskPost]);
+	}, [taskPost, taskDelete]);
 
 	const tasksRender = isLoading ? <p>Loading...</p> : filteredTasks(data);
 
