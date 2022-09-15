@@ -2,13 +2,14 @@ $primary-color: #2552ac;
 $secondary-color: #769ff2;
 $tertiary-color: #f1f4f6;
 $border: solid 1px;
+$border-transparent: transparent $border;
 $border-light: #d3d3d3 $border;
 $border-dark: #515151 $border;
 
 @mixin shadowed($scale) {
+	border: $border-transparent;
 	box-shadow: calc($scale * 3px) calc($scale * 3px) calc($scale * 6px) #c5c5c5,
 		calc($scale * -3px) calc($scale * -3px) calc($scale * 6px) #ffffff;
-
 	&:active {
 		box-shadow: inset calc($scale * 2px) calc($scale * 2px) 12px #c5c5c5,
 			inset calc($scale * -2px) calc($scale * -2px) calc($scale * 6px) #fff;
@@ -46,28 +47,85 @@ button {
 	cursor: pointer;
 }
 
+/* Header Styles */
 header {
 	display: flex;
-	justify-content: space-evenly;
 	align-items: center;
 	background-color: $primary-color;
 	color: $tertiary-color;
-	padding: 1.25em 0;
+	justify-content: space-between;
+	padding: 1.25em 0.5em;
+
+	.content {
+		display: flex;
+		flex: 2;
+		justify-content: space-between;
+	}
+
+	.margin {
+		display: none;
+	}
+
+	button {
+		display: initial;
+		background-color: transparent;
+		border: none;
+		color: $tertiary-color;
+		font-size: 1.7em;
+		margin: 0 0.25em;
+	}
+
+	.input-group {
+		display: flex;
+		position: relative;
+		align-items: center;
+		justify-content: center;
+
+		input {
+			height: 2em;
+			line-height: 1.75em;
+			padding: 0 1em;
+			padding-left: 2.5em;
+			border: transparent $border;
+			border-radius: 0.2em;
+			outline: none;
+			width: 100%;
+			background-color: #8baffb;
+			color: #0d0c22;
+			transition: 0.3s ease;
+
+			&::placeholder {
+				color: #291cca;
+			}
+
+			&:focus,
+			&:hover {
+				background-color: $tertiary-color;
+				outline: none;
+				border-color: #ea4c8966;
+				box-shadow: 0 0 0 4px #ea4c891a;
+				&::placeholder {
+					color: #000;
+				}
+			}
+		}
+
+		svg {
+			position: absolute;
+			left: 1em;
+			color: $primary-color;
+			width: 1em;
+			height: 1em;
+		}
+	}
 }
+
+/******************************************************/
 
 main {
 	display: flex;
 	flex: 1;
-	flex-direction: row;
-}
-
-aside {
-	display: flex;
 	flex-direction: column;
-	flex: 1;
-	background-color: $tertiary-color;
-	padding: 1.25em;
-	color: #000;
 }
 
 footer {
@@ -84,7 +142,7 @@ footer {
 /* Main Content */
 section.content {
 	display: flex;
-	flex: 5;
+	flex: 2;
 	padding: 2.5em;
 	flex-direction: column;
 	background-color: #fff;
@@ -239,7 +297,8 @@ datalist#categories {
 
 /* Task List */
 .tasks {
-	width: 60%;
+	width: 100%;
+	max-width: 48em;
 	margin: 0 auto;
 	li.task {
 		border-bottom: $border-light;
@@ -285,12 +344,34 @@ datalist#categories {
 /* Aside styles */
 
 aside {
+	display: flex;
+	background-color: $tertiary-color;
+	padding: 0 1.25em;
+	color: #000;
+	justify-content: center;
+
+	h2 {
+		display: none;
+	}
+
 	.categories {
+		display: flex;
+		overflow-x: auto;
+		width: 100vw;
+		white-space: nowrap;
+		flex-direction: row;
+
 		.category {
 			cursor: pointer;
-			padding: 0.6em 1.6em;
-			margin-bottom: 1.25em;
 			border-radius: 0.3em;
+			padding: 0.6em 1em;
+			margin: 1.5em 0.5em;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			flex: 0 0 150px;
+			white-space: nowrap;
+			height: unset;
+
 			@include shadowed(1);
 
 			&.active {
@@ -307,6 +388,59 @@ aside {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 37.5em) {
+	header {
+		padding: 1.25em 0.5em;
+
+		.margin {
+			display: flex;
+			flex: 0.5;
+			min-width: 10.5em;
+			padding: 1.25em;
+		}
+
+		.content {
+			display: flex;
+			flex: 2;
+			justify-content: space-between;
+		}
+
+		button {
+			display: initial;
+			background-color: transparent;
+			border: none;
+			color: $tertiary-color;
+			font-size: 1.7em;
+		}
+
+		.input-group:focus-within {
+			width: 80%;
+		}
+	}
+
+	aside {
+		flex: 0.5;
+		min-width: 10.5em;
+		flex-direction: column;
+		justify-content: unset;
+
+		.categories {
+			flex-direction: column;
+			overflow-x: unset;
+			width: unset;
+			.category {
+				padding: 0.6em 1.6em;
+				flex: auto;
+			}
+		}
+
+		h2 {
+			display: unset;
+		}
+	}
+
+	main {
+		flex-direction: row;
+	}
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
