@@ -47,6 +47,7 @@ export const Tasks = ({
 
 	// Delete method
 	const [taskDelete, taskDeleteMethod] = useFetchData({
+		name: 'tasks',
 		url: urlDelete,
 		method: 'delete',
 	});
@@ -77,6 +78,7 @@ export const Tasks = ({
 			return <Task key={task._id} task={task} handleDelete={handleDelete} />;
 		});
 	};
+
 	// When the post or delete methods are executed, executes the get method again
 	useEffect(() => {
 		console.log('task get');

@@ -65,6 +65,7 @@ export const CreateTask = ({
 	// Posts the task
 	const submitCreateTask = (e) => {
 		e.preventDefault();
+		setTask({});
 		postMethod();
 		closeModal();
 	};

@@ -30,6 +30,16 @@ export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
 				return;
 			}
 
+			if (method === 'delete') {
+				const resLSModified = JSON.parse(resLS);
+				const urlSplited = url.split('/');
+				const id = urlSplited[urlSplited.length - 1];
+				const index = resLSModified.findIndex((task) => task._id === id);
+				resLSModified.splice(index, 1);
+				localStorage.setItem(name, JSON.stringify(resLSModified));
+				return;
+			}
+
 			localStorage.setItem(name, JSON.stringify(response.data));
 		});
 	}, [method, url, data, headers, name]);
