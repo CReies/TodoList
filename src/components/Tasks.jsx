@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { API_URL } from '../.env/config';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { useFetchData } from '../hooks/useFetchData';
-import { CreateTask } from './CreateTask';
-import { Modal } from './Modal';
 import { Task } from './Task';
 
 /**
  * @returns Tasks Component
  */
-export const Tasks = ({
-	modalVisibleState,
-	categoriesFetch,
-	activeCategoryId,
-	search,
-}) => {
-	// New task state
-	// This will be passed to the create task form
-	const [newTask, setNewTask] = useState({
-		title: '',
-		description: '',
-		category: '',
-	});
-
+export const Tasks = ({ activeCategoryId, search, taskPost }) => {
+	const [urlPut, setUrlPut] = useState('');
 	const [urlDelete, setUrlDelete] = useState('');
 
 	// Get method
@@ -32,17 +17,11 @@ export const Tasks = ({
 		name: 'tasks',
 	});
 
-	// Post method
-	const [taskPost, taskPostMethod] = useFetchData({
+	// Put method
+	const [taskPut, taskPutMethod] = useFetchData({
 		name: 'tasks',
-		method: 'post',
-		url: `${API_URL}/tasks`,
-		data: {
-			_id: uuidv4(),
-			title: newTask.title,
-			description: newTask.description,
-			category: newTask.category,
-		},
+		url: urlPut,
+		method: 'put',
 	});
 
 	// Delete method
@@ -52,13 +31,17 @@ export const Tasks = ({
 		method: 'delete',
 	});
 
+	const handlePut = (taskId, modified) => {
+		console.log(taskId);
+		setUrlPut(`${API_URL}/tasks/${modified}/${taskId}`);
+		console.log(urlPut);
+	};
+
 	const handleDelete = (taskId) => {
 		console.log(taskId);
 		setUrlDelete(`${API_URL}/tasks/${taskId}`);
 		console.log(urlDelete);
 	};
-
-	const [modalVisible, setModalVisible] = modalVisibleState;
 
 	const { data, isLoading } = tasksGet;
 
@@ -75,7 +58,14 @@ export const Tasks = ({
 			)
 				return;
 
-			return <Task key={task._id} task={task} handleDelete={handleDelete} />;
+			return (
+				<Task
+					key={task._id}
+					task={task}
+					handlePut={handlePut}
+					handleDelete={handleDelete}
+				/>
+			);
 		});
 	};
 
@@ -83,7 +73,13 @@ export const Tasks = ({
 	useEffect(() => {
 		console.log('task get');
 		taskGetMethod();
-	}, [taskPost, taskDelete]);
+	}, [taskPost, taskPut, taskDelete]);
+
+	// When urlPut change
+	useDidUpdateEffect(() => {
+		console.log('task put');
+		taskPutMethod();
+	}, [urlPut]);
 
 	// When urlDelete change
 	useDidUpdateEffect(() => {
@@ -94,22 +90,5 @@ export const Tasks = ({
 	const tasksRender = isLoading ? <p>Loading...</p> : filteredTasks(data);
 
 	// Final Render
-	return (
-		<>
-			<Modal
-				visible={modalVisible}
-				changeVisible={setModalVisible}
-				title='New Task'
-				content={
-					<CreateTask
-						closeModal={() => setModalVisible(false)}
-						postMethod={taskPostMethod}
-						taskState={[newTask, setNewTask]}
-						categoriesFetch={categoriesFetch}
-					/>
-				}
-			/>
-			<div className='tasks'>{tasksRender}</div>
-		</>
-	);
+	return <div className='tasks'>{tasksRender}</div>;
 };
