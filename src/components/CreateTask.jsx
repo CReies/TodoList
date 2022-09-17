@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 
 /**
@@ -10,20 +9,12 @@ export const CreateTask = ({
 	closeModal,
 	taskState,
 	postMethod,
-	categoriesFetch,
+	categoriesGet,
 }) => {
 	// Task data entered in the form
 	const [task, setTask] = taskState;
 
-	const [categoriesGet, categoriesGetMethod] = categoriesFetch;
-
 	const { data, isLoading } = categoriesGet;
-
-	// When the component is rendered executes the getMethod
-	useEffect(() => {
-		console.log('categories get');
-		categoriesGetMethod();
-	}, []);
 
 	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
 	useDidUpdateEffect(() => {

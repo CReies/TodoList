@@ -32,7 +32,7 @@ const App = () => {
 					modalVisibleState={[modalVisible, setModalVisible]}
 					activeCategoryId={activeCategoryId}
 					search={search}
-					categoriesFetch={[categoriesGet, categoriesGetMethod]}
+					categoriesGet={categoriesGet}
 				/>
 			</main>
 			<Footer />
