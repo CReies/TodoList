@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from './Button';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * @returns Modal Component
@@ -10,13 +12,12 @@ export const Modal = ({ content, visible, changeVisible, title }) => {
 				<div className={`modal showShadow`}>
 					{title && (
 						<div className='modal-header'>
-							<h2>{title}</h2>
-							<button
-								className='modal-close'
+							<div className='modal-title'>{title}</div>
+							<Button
+								icon={faX}
 								onClick={() => changeVisible(false)}
-							>
-								x
-							</button>
+								className='modal-close'
+							/>
 						</div>
 					)}
 					<div className='modal-content'>{content}</div>
