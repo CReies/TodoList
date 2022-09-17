@@ -30,6 +30,18 @@ export const useFetchData = ({ method = 'get', url, data, headers, name }) => {
 				return;
 			}
 
+			if (method === 'put') {
+				const resLSModified = JSON.parse(resLS);
+				const urlSplited = url.split('/');
+				const id = urlSplited[urlSplited.length - 1];
+				const modified = urlSplited[urlSplited.length - 2];
+				const taskCompleted = modified === 'complete';
+				const index = resLSModified.findIndex((task) => task._id === id);
+				resLSModified[index].completed = taskCompleted;
+				localStorage.setItem(name, JSON.stringify(resLSModified));
+				return;
+			}
+
 			if (method === 'delete') {
 				const resLSModified = JSON.parse(resLS);
 				const urlSplited = url.split('/');
