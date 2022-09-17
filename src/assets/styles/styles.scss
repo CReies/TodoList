@@ -167,8 +167,7 @@ section.content {
 
 	.modal {
 		background-color: $tertiary-color;
-		max-width: 80%;
-		min-width: 50%;
+		width: 80%;
 		box-shadow: 0 15px 50px #00000060;
 		display: flex;
 		padding: 1.8em 1.8em 6em;
@@ -181,6 +180,11 @@ section.content {
 			border-bottom: $border-light;
 			margin-bottom: 3em;
 
+			.modal-title {
+				width: 80%;
+				max-width: 17em;
+			}
+
 			.modal-close {
 				background-color: inherit;
 				border: none;
@@ -190,6 +194,24 @@ section.content {
 }
 
 /********************************************/
+
+/* Tabs */
+.tabs {
+	display: flex;
+	font-size: 1.2em;
+	font-family: 'Montserrat', sans-serif;
+	justify-content: space-between;
+	span {
+		border: $border-light;
+		padding: 0.5em 1em;
+		border-radius: 5px 5px 0 0;
+		color: #6e6e6e;
+		&.active {
+			color: #000;
+			background-color: $secondary-color;
+		}
+	}
+}
 
 /* Create Task Form */
 form#createTask {
@@ -308,6 +330,10 @@ datalist#categories {
 		flex-direction: row;
 		align-items: center;
 
+		&.completed {
+			text-decoration: line-through;
+		}
+
 		.complete-task,
 		.delete-task {
 			display: flex;
@@ -316,11 +342,9 @@ datalist#categories {
 		}
 
 		.delete-task {
-			button {
-				background-color: $tertiary-color;
-				border: none;
-				@include shadowed(1);
-			}
+			background-color: transparent;
+			border: none;
+			color: #ee1414;
 		}
 
 		.task-content {
@@ -362,22 +386,26 @@ aside {
 		flex-direction: row;
 
 		.category {
+			display: flex;
+			align-items: center;
 			cursor: pointer;
 			border-radius: 0.3em;
 			padding: 0.6em 1em;
 			margin: 1.5em 0.5em;
-			text-overflow: ellipsis;
-			overflow: hidden;
 			flex: 0 0 150px;
-			white-space: nowrap;
-			height: unset;
+
+			.content {
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+			.color {
+				width: 1em;
+				height: 1em;
+				margin-right: 0.5em;
+			}
 
 			@include shadowed(1);
-
-			&.active {
-				background-color: $secondary-color;
-				color: $tertiary-color;
-			}
 		}
 	}
 }
@@ -418,7 +446,7 @@ aside {
 	}
 
 	aside {
-		flex: 0.5;
+		flex: 1;
 		min-width: 10.5em;
 		flex-direction: column;
 		justify-content: unset;
@@ -440,6 +468,11 @@ aside {
 
 	main {
 		flex-direction: row;
+		.modal-overlay .modal {
+			max-width: 70%;
+			width: unset;
+			min-width: 40%;
+		}
 	}
 }
 
@@ -449,6 +482,9 @@ aside {
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 62em) {
+	aside {
+		flex: 0.5;
+	}
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
