@@ -5,7 +5,7 @@ export const Category = ({ category, activeCategoryIdState }) => {
 	const [activeCategoryId, setActiveCategoryId] = activeCategoryIdState;
 
 	const handleClick = (e) => {
-		const target = e.target;
+		const target = document.querySelector(`#category-${_id}`);
 		const categoryId = target.id.split('-')[1];
 
 		if (activeCategoryId === categoryId) {
@@ -13,7 +13,7 @@ export const Category = ({ category, activeCategoryIdState }) => {
 			target.style.backgroundColor = 'unset';
 		} else {
 			setActiveCategoryId(categoryId);
-			target.style.backgroundColor = `#${color}40`;
+			target.style.backgroundColor = `${color}40`;
 		}
 	};
 
@@ -24,7 +24,7 @@ export const Category = ({ category, activeCategoryIdState }) => {
 				id={`category-${_id}`}
 				onClick={(e) => handleClick(e)}
 			>
-				<div className='color' style={{ backgroundColor: `#${color}` }}></div>
+				<div className='color' style={{ backgroundColor: `${color}` }}></div>
 				<div className='content'>{title}</div>
 			</div>
 		</>

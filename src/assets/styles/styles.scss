@@ -214,7 +214,7 @@ section.content {
 }
 
 /* Create Task Form */
-form#createTask {
+form {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -264,7 +264,7 @@ form#createTask {
 			max-height: 18.75em;
 		}
 
-		input,
+		input:not([type='color']),
 		textarea,
 		select {
 			font-size: 1rem;
