@@ -14,7 +14,7 @@ const updateLS = (tasks) => {
 const getAllTasks = async () => {
 	try {
 		if (LSData) return LSData;
-		const tasks = await axios.get(baseUrl);
+		const tasks = await (await axios.get(baseUrl)).data;
 		updateLS(tasks);
 		return tasks;
 	} catch (e) {
@@ -27,7 +27,9 @@ const getOneTask = async (id) => {
 	try {
 		const task =
 			(LSData && LSData.filter((task) => task._id === id)) ||
-			(await axios.get(`${baseUrl}/${id}`));
+			(await (
+				await axios.get(`${baseUrl}/${id}`)
+			).data);
 
 		return task;
 	} catch (e) {
@@ -38,7 +40,7 @@ const getOneTask = async (id) => {
 
 const createTask = async (newTask) => {
 	try {
-		const res = await axios.post(baseUrl, newTask);
+		const res = await (await axios.post(baseUrl, newTask)).data;
 
 		const tasksUpdated = LSData.concat(newTask);
 		updateLS(tasksUpdated);
@@ -52,7 +54,7 @@ const createTask = async (newTask) => {
 
 const deleteTask = async (id) => {
 	try {
-		const res = await axios.delete(`${baseUrl}/${id}`);
+		const res = await (await axios.delete(`${baseUrl}/${id}`)).data;
 
 		const tasksUpdated = LSData.filter((task) => task.id !== id);
 		updateLS(tasksUpdated);
@@ -66,7 +68,7 @@ const deleteTask = async (id) => {
 
 const completeTask = async (id) => {
 	try {
-		const res = await axios.put(`${baseUrl}/complete/${id}`);
+		const res = await (await axios.put(`${baseUrl}/complete/${id}`)).data;
 
 		const tasksUpdated =
 			LSData &&
@@ -85,12 +87,14 @@ const completeTask = async (id) => {
 
 const uncompleteTask = async (id) => {
 	try {
-		const res = await axios.put(`${baseUrl}/uncomplete/${id}`);
+		const res = await (await axios.put(`${baseUrl}/uncomplete/${id}`)).data;
 
-		const tasksUpdated = LSData.map((task) => {
-			if (task.id === id) task.complete = false;
-			return task;
-		});
+		const tasksUpdated =
+			LSData &&
+			LSData.map((task) => {
+				if (task.id === id) task.complete = false;
+				return task;
+			});
 		updateLS(tasksUpdated);
 
 		return res;
@@ -99,6 +103,7 @@ const uncompleteTask = async (id) => {
 		return errorMessage;
 	}
 };
+
 export {
 	getAllTasks,
 	getOneTask,

@@ -11,24 +11,21 @@ import { toggleCompleteTask } from '../reducers/tasksReducer';
 const Task = ({ task }) => {
 	const dispatch = useDispatch();
 
-	const activeCategoryState = useSelector(
+	const activeCategory = useSelector(
 		(state) => state.categories.activeCategory
 	);
-	const searchState = useSelector((state) => state.tasks.search);
+	const search = useSelector((state) => state.tasks.search);
 	const { _id, title, description, completed, category } = task;
 
 	useDidUpdateEffect(() => {
-		if (completed) uncompleteTask(_id);
-		if (!completed) completeTask(_id);
+		if (completed) completeTask(_id);
+		if (!completed) uncompleteTask(_id);
 	}, [completed]);
 
 	const includesSearch =
-		searchState === '' ||
-		title.includes(searchState) ||
-		description.includes(searchState);
+		search === '' || title.includes(search) || description.includes(search);
 
-	const categoryIsActive =
-		activeCategoryState === '' || activeCategoryState === category;
+	const categoryIsActive = activeCategory === '' || activeCategory === category;
 
 	return (
 		!(includesSearch && categoryIsActive) || (

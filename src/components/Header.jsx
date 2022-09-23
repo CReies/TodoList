@@ -10,7 +10,7 @@ import Button from './Button';
 const Header = () => {
 	const dispatch = useDispatch();
 
-	const searchState = useSelector((state) => state.tasks.search);
+	const search = useSelector((state) => state.tasks.search);
 
 	const handleOnChange = (e) => {
 		const target = e.target;
@@ -32,7 +32,7 @@ const Header = () => {
 						name='search'
 						id='search'
 						placeholder='Search'
-						value={searchState}
+						value={search}
 						onChange={(e) => handleOnChange(e)}
 					/>
 				</div>

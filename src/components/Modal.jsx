@@ -10,11 +10,11 @@ import CreateCategory from './CreateCategory';
  */
 const Modal = ({ title }) => {
 	const dispatch = useDispatch();
-	const modalState = useSelector((state) => state.modal);
+	const modal = useSelector((state) => state.modal);
 
 	let content;
 
-	switch (modalState.content) {
+	switch (modal.content) {
 		case 'Task':
 			content = <CreateTask />;
 			break;
@@ -29,7 +29,7 @@ const Modal = ({ title }) => {
 	}
 
 	return (
-		modalState.visible && (
+		modal.visible && (
 			<div className={`modal-overlay showOverlay`}>
 				<div className={`modal showShadow`}>
 					{title && (

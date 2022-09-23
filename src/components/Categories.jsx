@@ -2,7 +2,9 @@ import { useSelector } from 'react-redux';
 import Category from './Category';
 
 const Categories = () => {
-	const { categories, isLoading } = useSelector((state) => state.categories);
+	const { data: categories, isLoading } = useSelector(
+		(state) => state.categories
+	);
 
 	const categoriesRender = isLoading ? (
 		<p>Loading...</p>

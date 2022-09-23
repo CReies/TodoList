@@ -11,13 +11,13 @@ import Tasks from './Tasks';
 const Main = () => {
 	const dispatch = useDispatch();
 
-	const tabsValueState = useSelector((state) => state.tabs.value);
+	const tabsValue = useSelector((state) => state.tabs.value);
 
 	const modalTitle = <Tabs tabs={['Category', 'Task']} />;
 
 	useEffect(() => {
-		dispatch(setModalContent(tabsValueState));
-	}, [tabsValueState]);
+		dispatch(setModalContent(tabsValue));
+	}, [tabsValue]);
 
 	return (
 		<section className='content'>

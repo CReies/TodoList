@@ -12,8 +12,8 @@ import { createTask } from '../services/taskServices';
 const CreateTask = () => {
 	const dispatch = useDispatch();
 
-	const newTaskState = useSelector((state) => state.tasks.newTask);
-	const categoriesState = useSelector((state) => state.categories.categories);
+	const newTask = useSelector((state) => state.tasks.newTask);
+	const categories = useSelector((state) => state.categories.data);
 	const isLoading = useSelector((state) => state.categories.isLoading);
 
 	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
@@ -24,7 +24,7 @@ const CreateTask = () => {
 				value: document.querySelector('#categoriesSelect').value,
 			})
 		);
-	}, [categoriesState]);
+	}, [categories]);
 
 	// Dynamically changes the state when a input is modified
 	const handleOnChange = (e) => {
@@ -37,13 +37,13 @@ const CreateTask = () => {
 		<select
 			name='category'
 			id='categoriesSelect'
-			value={newTaskState.category}
+			value={newTask.category}
 			onChange={(e) => handleOnChange(e)}
 		>
 			{isLoading ? (
 				<option value='Loading'>Loading</option>
 			) : (
-				categoriesState.map((category) => (
+				categories.map((category) => (
 					<option key={category._id} value={category._id}>
 						{category.title}
 					</option>
@@ -55,7 +55,7 @@ const CreateTask = () => {
 	// Posts the task
 	const submitCreateTask = (e) => {
 		e.preventDefault();
-		createTask(newTaskState);
+		createTask(newTask);
 		dispatch(resetNewTask());
 		dispatch(toggleModal());
 	};
@@ -70,7 +70,7 @@ const CreateTask = () => {
 						name='title'
 						id='taskTitle'
 						required
-						value={newTaskState.title}
+						value={newTask.title}
 						onChange={(e) => handleOnChange(e)}
 						autoComplete='off'
 					/>
@@ -83,7 +83,7 @@ const CreateTask = () => {
 						name='description'
 						id='taskDescription'
 						required=''
-						value={newTaskState.description}
+						value={newTask.description}
 						onChange={(e) => handleOnChange(e)}
 					/>
 					<span className='bar'></span>

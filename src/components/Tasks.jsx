@@ -5,7 +5,7 @@ import Task from './Task';
  * @returns Tasks Component
  */
 const Tasks = () => {
-	const { isLoading, tasks } = useSelector((state) => state.tasks);
+	const { isLoading, data: tasks } = useSelector((state) => state.tasks);
 
 	const tasksRender = isLoading ? (
 		<p>Loading...</p>

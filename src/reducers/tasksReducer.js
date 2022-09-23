@@ -2,39 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
 
 const initialState = {
-	isloading: false,
+	isLoading: false,
 	search: '',
 	newTask: { _id: v4(), title: '', description: '', category: '' },
 	length: 3,
-	tasks: [
-		{
-			_id: '632cc74809285a5423ef9739',
-			title: 'sus',
-			description: 'impostor',
-			category: '0',
-			completed: false,
-			createdAt: '2022-09-22T20:36:24.526Z',
-			__v: 0,
-		},
-		{
-			_id: '632cc74b09285a5423ef973d',
-			title: 'sus2',
-			description: 'impostor',
-			category: '0',
-			completed: false,
-			createdAt: '2022-09-22T20:36:27.780Z',
-			__v: 0,
-		},
-		{
-			_id: '632cc74f09285a5423ef9741',
-			title: 'sus3',
-			description: 'impostor',
-			category: '0',
-			completed: false,
-			createdAt: '2022-09-22T20:36:31.748Z',
-			__v: 0,
-		},
-	],
+	data: [],
 };
 
 const taskSlice = createSlice({
@@ -42,33 +14,33 @@ const taskSlice = createSlice({
 	initialState,
 	reducers: {
 		setTasks: (state, action) => {
-			const tasks = action.payload;
-			return { ...state, tasks };
+			const data = action.payload;
+			return { ...state, data };
 		},
 
 		addTask: (state, action) => {
-			const tasks = state.tasks.concat(action.payload);
-			return { ...state, tasks };
+			const data = state.data.concat(action.payload);
+			return { ...state, data };
 		},
 
 		deleteTask: (state, action) => {
-			const tasks = state.task.filter((task) => task.id !== action.payload);
-			return { ...state, tasks };
+			const data = state.task.filter((task) => task.id !== action.payload);
+			return { ...state, data };
 		},
 
 		toggleCompleteTask: (state, action) => {
 			const id = action.payload;
-			const tasks = state.tasks.map((task) => {
-				if (task.id === id) {
-					task.completed = !task.completed;
-					return task;
+			const data = state.data.map((task) => {
+				if (id === task._id) {
+					return { ...task, completed: !task.completed };
 				}
+				return task;
 			});
-			return { ...state, tasks };
+			return { ...state, data };
 		},
 
-		toggleTasksLoading: (state) => {
-			return { ...state, isloading: !isloading };
+		toggleTasksLoading: (state, action) => {
+			return { ...state, isLoading: action.payload };
 		},
 
 		setNewTask: (state, action) => {
