@@ -1,13 +1,35 @@
-import React from 'react';
-import { Button } from './Button';
+import Button from './Button';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleModal } from '../reducers/modalReducer';
+import CreateTask from './CreateTask';
+import CreateCategory from './CreateCategory';
 
 /**
  * @returns Modal Component
  */
-export const Modal = ({ content, visible, changeVisible, title }) => {
+const Modal = ({ title }) => {
+	const dispatch = useDispatch();
+	const modalState = useSelector((state) => state.modal);
+
+	let content;
+
+	switch (modalState.content) {
+		case 'Task':
+			content = <CreateTask />;
+			break;
+
+		case 'Category':
+			content = <CreateCategory />;
+			break;
+
+		default:
+			content = 'Modal content error';
+			break;
+	}
+
 	return (
-		visible && (
+		modalState.visible && (
 			<div className={`modal-overlay showOverlay`}>
 				<div className={`modal showShadow`}>
 					{title && (
@@ -15,7 +37,7 @@ export const Modal = ({ content, visible, changeVisible, title }) => {
 							<div className='modal-title'>{title}</div>
 							<Button
 								icon={faX}
-								onClick={() => changeVisible(false)}
+								onClick={() => dispatch(toggleModal())}
 								className='modal-close'
 							/>
 						</div>
@@ -26,3 +48,5 @@ export const Modal = ({ content, visible, changeVisible, title }) => {
 		)
 	);
 };
+
+export default Modal;

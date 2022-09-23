@@ -1,16 +1,18 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTabsValue } from '../reducers/tabsReducer';
 
-export const Tabs = ({ tabs, tabState }) => {
-	const [tabName, setTab] = tabState;
+const Tabs = ({ tabs }) => {
+	const dispatch = useDispatch();
+	const tabsValueState = useSelector((state) => state.tabs.value);
 
-	const handleClick = (e, tabName) => {
-		setTab(tabName);
+	const handleClick = (e, value) => {
+		dispatch(setTabsValue(value));
 	};
 
 	const tabRender = tabs.map((localTabName) => (
 		<span
 			key={localTabName}
-			className={localTabName === tabName ? 'active' : ''}
+			className={localTabName === tabsValueState ? 'active' : ''}
 			onClick={(e) => handleClick(e, localTabName)}
 		>
 			{localTabName}
@@ -19,3 +21,5 @@ export const Tabs = ({ tabs, tabState }) => {
 
 	return <div className='tabs'>{tabRender}</div>;
 };
+
+export default Tabs;

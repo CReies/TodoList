@@ -1,16 +1,24 @@
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { Button } from './Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleModal } from '../reducers/modalReducer';
+import Button from './Button';
 
 /**
  * @returns Header Component
  */
-export const Header = ({ setModalVisible, searchState }) => {
-	const [search, setSearch] = searchState;
+const Header = () => {
+	const dispatch = useDispatch();
+
+	const searchState = useSelector((state) => state.tasks.search);
 
 	const handleOnChange = (e) => {
-		setSearch(e.target.value);
+		const target = e.target;
+		dispatch(target.value);
+	};
+
+	const handleOnClick = (e) => {
+		dispatch(toggleModal());
 	};
 
 	return (
@@ -24,7 +32,7 @@ export const Header = ({ setModalVisible, searchState }) => {
 						name='search'
 						id='search'
 						placeholder='Search'
-						value={search}
+						value={searchState}
 						onChange={(e) => handleOnChange(e)}
 					/>
 				</div>
@@ -32,9 +40,11 @@ export const Header = ({ setModalVisible, searchState }) => {
 					icon={faPlus}
 					className='btn'
 					id='new-task'
-					onClick={() => setModalVisible(true)}
+					onClick={(e) => handleOnClick(e)}
 				/>
 			</div>
 		</header>
 	);
 };
+
+export default Header;

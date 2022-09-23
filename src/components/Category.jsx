@@ -1,18 +1,24 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveCategory } from '../reducers/categoriesReducer';
 
-export const Category = ({ category, activeCategoryIdState }) => {
+const Category = ({ category }) => {
+	const dispatch = useDispatch();
+
 	const { _id, title, color } = category;
-	const [activeCategoryId, setActiveCategoryId] = activeCategoryIdState;
+
+	const activeCategoryId = useSelector(
+		(state) => state.categories.activeCategory
+	);
 
 	const handleClick = (e) => {
 		const target = document.querySelector(`#category-${_id}`);
 		const categoryId = target.id.split('-')[1];
 
 		if (activeCategoryId === categoryId) {
-			setActiveCategoryId('');
+			dispatch(setActiveCategory(''));
 			target.style.backgroundColor = 'unset';
 		} else {
-			setActiveCategoryId(categoryId);
+			dispatch(setActiveCategory(categoryId));
 			target.style.backgroundColor = `${color}40`;
 		}
 	};
@@ -30,3 +36,5 @@ export const Category = ({ category, activeCategoryIdState }) => {
 		</>
 	);
 };
+
+export default Category;

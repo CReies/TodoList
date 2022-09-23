@@ -1,17 +1,15 @@
-import React from 'react';
-import { Categories } from './Categories';
+import Categories from './Categories';
 
 /**
  * @returns Aside Component
  */
-export const Aside = ({ categoriesFetch, activeCategoryIdState }) => {
+const Aside = () => {
 	return (
 		<aside>
 			<h2>Categories</h2>
-			<Categories
-				activeCategoryIdState={activeCategoryIdState}
-				categoriesFetch={categoriesFetch}
-			/>
+			<Categories />
 		</aside>
 	);
 };
+
+export default Aside;

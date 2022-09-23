@@ -1,36 +1,35 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
+import { toggleModal } from '../reducers/modalReducer';
+import { resetNewTask, setNewTask } from '../reducers/tasksReducer';
+import { createTask } from '../services/taskServices';
 
 /**
  * Create Task Form
  *
  * @returns Create Task Form
  */
-export const CreateTask = ({
-	closeModal,
-	taskState,
-	postMethod,
-	categoriesGet,
-}) => {
-	// Task data entered in the form
-	const [task, setTask] = taskState;
+const CreateTask = () => {
+	const dispatch = useDispatch();
 
-	const { data, isLoading } = categoriesGet;
+	const newTaskState = useSelector((state) => state.tasks.newTask);
+	const categoriesState = useSelector((state) => state.categories.categories);
+	const isLoading = useSelector((state) => state.categories.isLoading);
 
 	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
 	useDidUpdateEffect(() => {
-		setTask((prevState) => ({
-			...prevState,
-			category: document.querySelector('#categoriesSelect').value,
-		}));
-	}, [categoriesGet]);
+		dispatch(
+			setNewTask({
+				name: 'category',
+				value: document.querySelector('#categoriesSelect').value,
+			})
+		);
+	}, [categoriesState]);
 
 	// Dynamically changes the state when a input is modified
 	const handleOnChange = (e) => {
 		const target = e.target;
-		setTask((prevState) => ({
-			...prevState,
-			[target.name]: e.target.value,
-		}));
+		dispatch(setNewTask({ name: target.name, value: target.value }));
 	};
 
 	// <select> input for the category
@@ -38,13 +37,13 @@ export const CreateTask = ({
 		<select
 			name='category'
 			id='categoriesSelect'
-			value={task.category}
+			value={newTaskState.category}
 			onChange={(e) => handleOnChange(e)}
 		>
 			{isLoading ? (
 				<option value='Loading'>Loading</option>
 			) : (
-				data.map((category) => (
+				categoriesState.map((category) => (
 					<option key={category._id} value={category._id}>
 						{category.title}
 					</option>
@@ -56,9 +55,9 @@ export const CreateTask = ({
 	// Posts the task
 	const submitCreateTask = (e) => {
 		e.preventDefault();
-		setTask({});
-		postMethod();
-		closeModal();
+		createTask(newTaskState);
+		dispatch(resetNewTask());
+		dispatch(toggleModal());
 	};
 
 	// Final Render
@@ -71,7 +70,7 @@ export const CreateTask = ({
 						name='title'
 						id='taskTitle'
 						required
-						value={task.title}
+						value={newTaskState.title}
 						onChange={(e) => handleOnChange(e)}
 						autoComplete='off'
 					/>
@@ -84,7 +83,7 @@ export const CreateTask = ({
 						name='description'
 						id='taskDescription'
 						required=''
-						value={task.description}
+						value={newTaskState.description}
 						onChange={(e) => handleOnChange(e)}
 					/>
 					<span className='bar'></span>
@@ -104,3 +103,5 @@ export const CreateTask = ({
 		</>
 	);
 };
+
+export default CreateTask;

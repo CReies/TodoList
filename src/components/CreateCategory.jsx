@@ -1,5 +1,5 @@
-import React from 'react';
-
-export const CreateCategory = () => {
+const CreateCategory = () => {
 	return <div>CreateCategory</div>;
 };
+
+export default CreateCategory;
