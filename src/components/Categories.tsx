@@ -1,9 +1,12 @@
 import { useSelector } from 'react-redux';
 import Category from './Category';
+import type { RootState } from '../store';
 
+// Categories list component
 const Categories = () => {
-	const { data: categories, isLoading } = useSelector(
-		(state) => state.categories
+	const categories = useSelector((state: RootState) => state.categories.data);
+	const isLoading = useSelector(
+		(state: RootState) => state.categories.isLoading
 	);
 
 	const categoriesRender = isLoading ? (

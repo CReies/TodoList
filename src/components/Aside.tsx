@@ -1,8 +1,6 @@
 import Categories from './Categories';
 
-/**
- * @returns Aside Component
- */
+// Aside Component
 const Aside = () => {
 	return (
 		<aside>

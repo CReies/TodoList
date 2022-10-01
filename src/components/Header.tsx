@@ -1,24 +1,28 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleModal } from '../features/modal/modalSlice';
+import { setSearch } from '../features/tasks/tasksSlice';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal } from '../reducers/modalReducer';
 import Button from './Button';
+import type { RootState } from '../store';
+import type { ChangeEvent, MouseEvent } from 'react';
 
-/**
- * @returns Header Component
- */
+// Header Component
 const Header = () => {
 	const dispatch = useDispatch();
 
-	const search = useSelector((state) => state.tasks.search);
+	const modalVisible = useSelector((state: RootState) => state.modal.visible);
+	const search = useSelector((state: RootState) => state.tasks.search);
 
-	const handleOnChange = (e) => {
+	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const target = e.target;
-		dispatch(target.value);
+		if (!target) return;
+
+		dispatch(setSearch(target.value));
 	};
 
-	const handleOnClick = (e) => {
-		dispatch(toggleModal());
+	const handleOnClick = (e: MouseEvent) => {
+		dispatch(toggleModal(modalVisible));
 	};
 
 	return (

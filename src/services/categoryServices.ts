@@ -1,19 +1,25 @@
 import axios from 'axios';
 import { API_URL } from '../.env/config';
+import type { ICategory } from '../util/types';
 
-const LS = localStorage;
-const LSData = JSON.parse(LS.getItem('categories'));
+type Categories = Array<ICategory>;
+
 const baseUrl = `${API_URL}/categories`;
+const LS = localStorage;
+const LSData = LS.getItem('categories') || false;
+
+let LSDataParsed: Array<ICategory>;
+if (LSData) LSDataParsed = JSON.parse(LSData);
 
 const errorMessage = 'Something went wrong';
 
-const updateLS = (categories) => {
+const updateLS = (categories: Categories) => {
 	LS.setItem('categories', JSON.stringify(categories));
 };
 
-const getAllCegories = async () => {
+export const getAllCegories = async () => {
 	try {
-		if (LSData) return LSData;
+		if (LSData) return LSDataParsed;
 		const categories = await (await axios.get(baseUrl)).data;
 		updateLS(categories);
 		return categories;
@@ -23,10 +29,11 @@ const getAllCegories = async () => {
 	}
 };
 
-const getOneCategory = async (id) => {
+export const getOneCategory = async (id: ICategory['_id']) => {
 	try {
 		const category =
-			(LSData && LSData.filter((category) => category._id === id)) ||
+			(LSDataParsed &&
+				LSDataParsed.filter((category) => category._id === id)) ||
 			(await (
 				await axios.get(`${baseUrl}/${id}`)
 			).data);
@@ -38,11 +45,11 @@ const getOneCategory = async (id) => {
 	}
 };
 
-const createCategory = async (newcategory) => {
+export const createCategory = async (newcategory: ICategory) => {
 	try {
 		const res = await (await axios.post(baseUrl, newcategory)).data;
 
-		const categoriesUpdated = LSData.concat(newcategory);
+		const categoriesUpdated = LSDataParsed.concat(newcategory);
 		updateLS(categoriesUpdated);
 
 		return res;
@@ -52,11 +59,13 @@ const createCategory = async (newcategory) => {
 	}
 };
 
-const deleteCategory = async (id) => {
+export const deleteCategory = async (id: ICategory['_id']) => {
 	try {
 		const res = await (await axios.delete(`${baseUrl}/${id}`)).data;
 
-		const categoriesUpdated = LSData.filter((category) => category.id !== id);
+		const categoriesUpdated = LSDataParsed.filter(
+			(category) => category._id !== id
+		);
 		updateLS(categoriesUpdated);
 
 		return res;
@@ -65,5 +74,3 @@ const deleteCategory = async (id) => {
 		return errorMessage;
 	}
 };
-
-export { getAllCegories, getOneCategory, createCategory, deleteCategory };

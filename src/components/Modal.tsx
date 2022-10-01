@@ -1,16 +1,22 @@
-import Button from './Button';
-import { faX } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal } from '../reducers/modalReducer';
+import { toggleModal } from '../features/modal/modalSlice';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import Button from './Button';
 import CreateTask from './CreateTask';
 import CreateCategory from './CreateCategory';
+import type { RootState } from '../store';
+import type { ReactElement } from 'react';
 
-/**
- * @returns Modal Component
- */
-const Modal = ({ title }) => {
+interface Props {
+	title: string | ReactElement;
+}
+
+// Modal Component
+const Modal = (props: Props) => {
+	const { title } = props;
 	const dispatch = useDispatch();
-	const modal = useSelector((state) => state.modal);
+
+	const modal = useSelector((state: RootState) => state.modal);
 
 	let content;
 
@@ -28,16 +34,19 @@ const Modal = ({ title }) => {
 			break;
 	}
 
-	return (
-		modal.visible && (
+	let modalRender = <></>;
+
+	if (modal.visible) {
+		modalRender = (
 			<div className={`modal-overlay showOverlay`}>
 				<div className={`modal showShadow`}>
 					{title && (
 						<div className='modal-header'>
 							<div className='modal-title'>{title}</div>
 							<Button
+								id='closeModal'
 								icon={faX}
-								onClick={() => dispatch(toggleModal())}
+								onClick={() => dispatch(toggleModal(modal.visible))}
 								className='modal-close'
 							/>
 						</div>
@@ -45,8 +54,10 @@ const Modal = ({ title }) => {
 					<div className='modal-content'>{content}</div>
 				</div>
 			</div>
-		)
-	);
+		);
+	}
+
+	return modalRender;
 };
 
 export default Modal;

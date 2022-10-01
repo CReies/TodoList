@@ -1,23 +1,24 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setModalContent } from '../reducers/modalReducer';
+import { setModalContent } from '../features/modal/modalSlice';
+import { setTabs } from '../features/tabs/tabsSlice';
 import Modal from './Modal';
 import Tabs from './Tabs';
 import Tasks from './Tasks';
+import type { RootState } from '../store';
 
-/**
- * @returns Main Component
- */
+// Main Component
 const Main = () => {
 	const dispatch = useDispatch();
 
-	const tabsValue = useSelector((state) => state.tabs.value);
-
-	const modalTitle = <Tabs tabs={['Category', 'Task']} />;
+	const tabsValue = useSelector((state: RootState) => state.tabs.value);
 
 	useEffect(() => {
 		dispatch(setModalContent(tabsValue));
+		dispatch(setTabs(['Category', 'Task']));
 	}, [tabsValue]);
+
+	const modalTitle = <Tabs />;
 
 	return (
 		<section className='content'>

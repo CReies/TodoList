@@ -1,19 +1,24 @@
 import axios from 'axios';
 import { API_URL } from '../.env/config';
+import { ITask } from '../util/types';
 
-const LS = localStorage;
-const LSData = JSON.parse(LS.getItem('tasks'));
+type Tasks = Array<ITask>;
+
 const baseUrl = `${API_URL}/tasks`;
+const LS = localStorage;
+const LSData = LS.getItem('tasks');
+let LSDataParsed: Tasks;
+if (LSData) LSDataParsed = JSON.parse(LSData);
 
 const errorMessage = 'Something went wrong';
 
-const updateLS = (tasks) => {
+const updateLS = (tasks: Tasks) => {
 	LS.setItem('tasks', JSON.stringify(tasks));
 };
 
-const getAllTasks = async () => {
+export const getAllTasks = async () => {
 	try {
-		if (LSData) return LSData;
+		if (LSData) return LSDataParsed;
 		const tasks = await (await axios.get(baseUrl)).data;
 		updateLS(tasks);
 		return tasks;
@@ -23,10 +28,10 @@ const getAllTasks = async () => {
 	}
 };
 
-const getOneTask = async (id) => {
+export const getOneTask = async (id: ITask['_id']) => {
 	try {
 		const task =
-			(LSData && LSData.filter((task) => task._id === id)) ||
+			(LSDataParsed && LSDataParsed.filter((task: ITask) => task._id === id)) ||
 			(await (
 				await axios.get(`${baseUrl}/${id}`)
 			).data);
@@ -38,11 +43,11 @@ const getOneTask = async (id) => {
 	}
 };
 
-const createTask = async (newTask) => {
+export const createTask = async (newTask: ITask) => {
 	try {
 		const res = await (await axios.post(baseUrl, newTask)).data;
 
-		const tasksUpdated = LSData.concat(newTask);
+		const tasksUpdated = LSDataParsed.concat(newTask);
 		updateLS(tasksUpdated);
 
 		return res;
@@ -52,11 +57,11 @@ const createTask = async (newTask) => {
 	}
 };
 
-const deleteTask = async (id) => {
+export const deleteTask = async (id: ITask['_id']) => {
 	try {
 		const res = await (await axios.delete(`${baseUrl}/${id}`)).data;
 
-		const tasksUpdated = LSData.filter((task) => task.id !== id);
+		const tasksUpdated = LSDataParsed.filter((task: ITask) => task._id !== id);
 		updateLS(tasksUpdated);
 
 		return res;
@@ -66,14 +71,14 @@ const deleteTask = async (id) => {
 	}
 };
 
-const completeTask = async (id) => {
+export const completeTask = async (id: ITask['_id']) => {
 	try {
 		const res = await (await axios.put(`${baseUrl}/complete/${id}`)).data;
 
 		const tasksUpdated =
-			LSData &&
-			LSData.map((task) => {
-				if (task.id === id) task.complete = true;
+			LSDataParsed &&
+			LSDataParsed.map((task: ITask) => {
+				if (task._id === id) task.completed = true;
 				return task;
 			});
 		updateLS(tasksUpdated);
@@ -85,14 +90,14 @@ const completeTask = async (id) => {
 	}
 };
 
-const uncompleteTask = async (id) => {
+export const uncompleteTask = async (id: ITask['_id']) => {
 	try {
 		const res = await (await axios.put(`${baseUrl}/uncomplete/${id}`)).data;
 
 		const tasksUpdated =
-			LSData &&
-			LSData.map((task) => {
-				if (task.id === id) task.complete = false;
+			LSDataParsed &&
+			LSDataParsed.map((task: ITask) => {
+				if (task._id === id) task.completed = false;
 				return task;
 			});
 		updateLS(tasksUpdated);
@@ -102,13 +107,4 @@ const uncompleteTask = async (id) => {
 		console.error(e);
 		return errorMessage;
 	}
-};
-
-export {
-	getAllTasks,
-	getOneTask,
-	createTask,
-	deleteTask,
-	completeTask,
-	uncompleteTask,
 };

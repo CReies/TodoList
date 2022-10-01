@@ -1,36 +1,56 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
-import { toggleModal } from '../reducers/modalReducer';
-import { resetNewTask, setNewTask } from '../reducers/tasksReducer';
+import { toggleModal } from '../features/modal/modalSlice';
+import { resetNewTask, setNewTask } from '../features/tasks/tasksSlice';
 import { createTask } from '../services/taskServices';
+import { $ } from '../util/functions';
+import type { ChangeEvent, FormEvent } from 'react';
+import type { RootState } from '../store';
 
-/**
- * Create Task Form
- *
- * @returns Create Task Form
- */
+// Create Task Form
 const CreateTask = () => {
 	const dispatch = useDispatch();
 
-	const newTask = useSelector((state) => state.tasks.newTask);
-	const categories = useSelector((state) => state.categories.data);
-	const isLoading = useSelector((state) => state.categories.isLoading);
-
-	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
-	useDidUpdateEffect(() => {
-		dispatch(
-			setNewTask({
-				name: 'category',
-				value: document.querySelector('#categoriesSelect').value,
-			})
-		);
-	}, [categories]);
+	const newTask = useSelector((state: RootState) => state.tasks.newTask);
+	const categories = useSelector((state: RootState) => state.categories.data);
+	const modalVisible = useSelector((state: RootState) => state.modal.visible);
+	const isLoading = useSelector(
+		(state: RootState) => state.categories.isLoading
+	);
 
 	// Dynamically changes the state when a input is modified
-	const handleOnChange = (e) => {
+	const handleOnChange = (
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+	) => {
 		const target = e.target;
-		dispatch(setNewTask({ name: target.name, value: target.value }));
+
+		if (!target) return;
+
+		const name = target.name;
+		const value = target.value;
+		dispatch(setNewTask({ name, value }));
 	};
+
+	// Posts the task
+	const submitCreateTask = (e: FormEvent) => {
+		e.preventDefault();
+		createTask(newTask);
+		dispatch(resetNewTask());
+		dispatch(toggleModal(!modalVisible));
+	};
+
+	//! ToDo: is this necesary?
+	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
+	useDidUpdateEffect(() => {
+		const name = 'category';
+		const input = $('#categoriesSelect') as HTMLInputElement | null;
+
+		if (!input) return;
+
+		const value = input.value;
+
+		dispatch(setNewTask({ name, value }));
+	}, [categories]);
 
 	// <select> input for the category
 	const selectCategory = (
@@ -51,14 +71,6 @@ const CreateTask = () => {
 			)}
 		</select>
 	);
-
-	// Posts the task
-	const submitCreateTask = (e) => {
-		e.preventDefault();
-		createTask(newTask);
-		dispatch(resetNewTask());
-		dispatch(toggleModal());
-	};
 
 	// Final Render
 	return (
@@ -82,7 +94,7 @@ const CreateTask = () => {
 					<textarea
 						name='description'
 						id='taskDescription'
-						required=''
+						required={false}
 						value={newTask.description}
 						onChange={(e) => handleOnChange(e)}
 					/>

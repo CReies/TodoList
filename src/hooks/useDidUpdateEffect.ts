@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
+import type { DependencyList } from 'react';
 
-export const useDidUpdateEffect = (fn, inputs) => {
+export const useDidUpdateEffect = (fn: Function, inputs: DependencyList) => {
 	const didMountRef = useRef(false);
 
 	useEffect(() => {

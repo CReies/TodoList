@@ -1,18 +1,18 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setTasks, toggleTasksLoading } from './features/tasks/tasksSlice';
+import {
+	setCategories,
+	toggleCategoriesLoading,
+} from './features/categories/categoriesSlice';
+import { getAllTasks } from './services/taskServices';
+import { getAllCegories } from './services/categoryServices';
 import Header from './components/Header';
 import Aside from './components/Aside';
 import Main from './components/Main';
 import Footer from './components/Footer';
 import 'normalize.css';
 import './assets/styles/styles.scss';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getAllTasks } from './services/taskServices';
-import { setTasks, toggleTasksLoading } from './reducers/tasksReducer';
-import { getAllCegories } from './services/categoryServices';
-import {
-	setCategories,
-	toggleCategoriesLoading,
-} from './reducers/categoriesReducer';
 
 const App = () => {
 	const dispatch = useDispatch();
