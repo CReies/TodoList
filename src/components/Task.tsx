@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
-import { toggleCompleteTask } from '../features/tasks/tasksSlice';
+import { removeTask, setCompleteTask } from '../features/tasks/tasksSlice';
 import {
 	completeTask,
 	deleteTask,
@@ -33,11 +33,13 @@ const Task = (props: Props) => {
 		search === '' || title.includes(search) || description.includes(search);
 
 	const handleDelete = () => {
+		dispatch(removeTask(_id));
 		deleteTask(_id);
 	};
 
 	const handleComplete = () => {
-		dispatch(toggleCompleteTask(_id));
+		dispatch(setCompleteTask({ id: _id, completed: !completed }));
+		completeTask(_id);
 	};
 
 	useDidUpdateEffect(() => {

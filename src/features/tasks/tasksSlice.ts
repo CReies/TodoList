@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { ITask } from '../../util/types';
+import type { ICategory, ITask } from '../../util/types';
 
 interface TaskState {
 	isLoading: boolean;
@@ -37,27 +37,36 @@ const taskSlice = createSlice({
 			return { ...state, data };
 		},
 
-		deleteTask: (state, action: PayloadAction<ITask['_id']>) => {
+		removeTask: (state, action: PayloadAction<ITask['_id']>) => {
 			const data = state.data.filter((task) => task._id !== action.payload);
 			return { ...state, data };
 		},
 
-		toggleCompleteTask: (state, action) => {
-			const id = action.payload;
+		setCompleteTask: (
+			state,
+			action: PayloadAction<{ id: ITask['_id']; completed: ITask['completed'] }>
+		) => {
+			const { id, completed } = action.payload;
 			const data = state.data.map((task) => {
 				if (id === task._id) {
-					return { ...task, completed: !task.completed };
+					return { ...task, completed };
 				}
 				return task;
 			});
 			return { ...state, data };
 		},
 
-		toggleTasksLoading: (state, action) => {
+		setTasksLoading: (state, action: PayloadAction<TaskState['isLoading']>) => {
 			return { ...state, isLoading: action.payload };
 		},
 
-		setNewTask: (state, action) => {
+		setNewTask: (
+			state,
+			action: PayloadAction<{
+				name: string;
+				value: string | boolean | ICategory['_id'];
+			}>
+		) => {
 			const newTask = {
 				...state.newTask,
 				[action.payload.name]: action.payload.value,
@@ -70,7 +79,7 @@ const taskSlice = createSlice({
 			return { ...state, newTask };
 		},
 
-		setSearch: (state, action) => {
+		setSearch: (state, action: PayloadAction<TaskState["search"]>) => {
 			const search = action.payload;
 			return { ...state, search };
 		},
@@ -81,9 +90,9 @@ export default taskSlice.reducer;
 export const {
 	setTasks,
 	addTask,
-	deleteTask,
-	toggleCompleteTask,
-	toggleTasksLoading,
+	removeTask,
+	setCompleteTask,
+	setTasksLoading,
 	setNewTask,
 	resetNewTask,
 	setSearch,

@@ -2,7 +2,7 @@ export interface ITask {
 	_id: string;
 	title: string;
 	description: string;
-	category: Category['_id'];
+	category: ICategory['_id'];
 	completed: boolean;
 	createdAt?: Date;
 }

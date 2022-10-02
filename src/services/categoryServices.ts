@@ -17,7 +17,7 @@ const updateLS = (categories: Categories) => {
 	LS.setItem('categories', JSON.stringify(categories));
 };
 
-export const getAllCegories = async () => {
+export const getAllCategories = async () => {
 	try {
 		if (LSData) return LSDataParsed;
 		const categories = await (await axios.get(baseUrl)).data;
