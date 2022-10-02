@@ -5,12 +5,19 @@ import type { ICategory } from '../../util/types';
 export interface CategoriesState {
 	isLoading: boolean;
 	activeCategory: string;
+	newCategory: ICategory;
 	data: Array<ICategory>;
 }
 
 const initialState: CategoriesState = {
 	isLoading: false,
 	activeCategory: '',
+	newCategory: {
+		_id: '',
+		title: '',
+		color: '#6e6e6e',
+		tasks: [],
+	},
 	data: [],
 };
 
@@ -35,7 +42,26 @@ const categorySlice = createSlice({
 			return { ...state, data };
 		},
 
-		toggleCategoriesLoading: (
+		setNewCategory: (
+			state,
+			action: PayloadAction<{
+				name: string;
+				value: string | boolean | ICategory['_id'];
+			}>
+		) => {
+			const newCategory = {
+				...state.newCategory,
+				[action.payload.name]: action.payload.value,
+			};
+			return { ...state, newCategory };
+		},
+
+		resetNewCategory: (state) => {
+			const newCategory = { ...initialState.newCategory };
+			return { ...state, newCategory };
+		},
+
+		setCategoriesLoading: (
 			state,
 			action: PayloadAction<CategoriesState['isLoading']>
 		) => {
@@ -56,6 +82,8 @@ export const {
 	setCategories,
 	addCategory,
 	deleteCategory,
-	toggleCategoriesLoading,
+	setNewCategory,
+	resetNewCategory,
+	setCategoriesLoading,
 	setActiveCategory,
 } = categorySlice.actions;

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setTasks, setTasksLoading } from './features/tasks/tasksSlice';
 import {
 	setCategories,
-	toggleCategoriesLoading,
+	setCategoriesLoading,
 } from './features/categories/categoriesSlice';
 import { getAllTasks } from './services/taskServices';
 import { getAllCategories } from './services/categoryServices';
@@ -19,20 +19,21 @@ const App = () => {
 
 	useEffect(() => {
 		const fetchData = async function () {
-			if (!localStorage.getItem('tasks')) dispatch(setTasksLoading(true));
-			if (!localStorage.getItem('categories'))
-				dispatch(toggleCategoriesLoading(true));
+			localStorage.clear();
+			dispatch(setTasksLoading(true));
+			dispatch(setCategoriesLoading(true));
 
 			const tasks = await getAllTasks();
 			const categories = await getAllCategories();
+
 			dispatch(setTasks(tasks));
 			dispatch(setCategories(categories));
 			dispatch(setTasksLoading(false));
-			dispatch(toggleCategoriesLoading(false));
+			dispatch(setCategoriesLoading(false));
 		};
 
 		fetchData();
-	});
+	}, []);
 
 	return (
 		<>
