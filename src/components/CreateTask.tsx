@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { toggleModal } from '../features/modal/modalSlice';
-import { resetNewTask, setNewTask } from '../features/tasks/tasksSlice';
+import { addTask, resetNewTask, setNewTask } from '../features/tasks/tasksSlice';
 import { createTask } from '../services/taskServices';
 import { $ } from '../util/functions';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -35,6 +35,7 @@ const CreateTask = () => {
 	const submitCreateTask = (e: FormEvent) => {
 		e.preventDefault();
 		createTask(newTask);
+		dispatch(addTask(newTask))
 		dispatch(resetNewTask());
 		dispatch(toggleModal(!modalVisible));
 	};

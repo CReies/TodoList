@@ -47,7 +47,7 @@ const Task = (props: Props) => {
 
 	let taskRender = <></>;
 
-	if (categoryIsActive || includesSearch) {
+	if (categoryIsActive && includesSearch) {
 		taskRender = (
 			<li className={`task ${completed ? 'completed' : ''}`}>
 				<div className='complete-task'>
