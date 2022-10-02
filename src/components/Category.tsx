@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveCategory } from '../features/categories/categoriesSlice';
+import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { RootState } from '../store';
 import { $ } from '../util/functions';
 import type { ICategory } from '../util/types';
@@ -22,18 +23,23 @@ const Category = (props: Props) => {
 
 	// Toggles active state in the category
 	const handleActiveCategory = () => {
-		const target = $(`#category-${_id}`);
-		if (!target) return;
-
-		//! ToDo: fix this
 		if (activeCategoryId === _id) {
 			dispatch(setActiveCategory(''));
-			target.style.backgroundColor = 'unset';
 		} else {
 			dispatch(setActiveCategory(_id));
-			target.style.backgroundColor = `${color}40`;
 		}
 	};
+
+	useDidUpdateEffect(() => {
+		const category = $(`#category-${_id}`);
+		if (!category) return;
+
+		if (activeCategoryId === _id) {
+			category.style.backgroundColor = `${color}40`;
+		} else {
+			category.style.backgroundColor = 'unset';
+		}
+	}, [activeCategoryId]);
 
 	return (
 		<>
