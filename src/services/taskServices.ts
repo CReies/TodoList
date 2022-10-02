@@ -11,11 +11,13 @@ const LSData = LS.getItem('tasks') || false;
 let LSDataParsed: Tasks;
 if (LSData) LSDataParsed = JSON.parse(LSData);
 
-const errorMessage = 'Something went wrong';
+enum errors {
+	LS = 'Local storage error',
+	Server = 'Internal server error',
+}
 
 const updateLS = (tasks: Tasks) => {
 	LS.setItem('tasks', JSON.stringify(tasks));
-	console.log(tasks);
 };
 
 export const getAllTasks = async () => {
@@ -23,58 +25,57 @@ export const getAllTasks = async () => {
 		if (LSData) return LSDataParsed;
 		const tasks = await (await axios.get(baseUrl)).data;
 
-		if (!tasks) return;
+		if (!tasks) throw errors.Server;
 
 		updateLS(tasks);
 		return tasks;
 	} catch (e) {
 		console.error(e);
-		return errorMessage;
 	}
 };
 
 export const getOneTask = async (id: ITask['_id']) => {
 	try {
-		const task =
-			(LSDataParsed && LSDataParsed.filter((task: ITask) => task._id === id)) ||
-			(await (
-				await axios.get(`${baseUrl}/${id}`)
-			).data);
+		let task: ITask | undefined;
+		if (LSData) {
+			task = LSDataParsed.find((task) => task._id === id);
+		} else {
+			task = await (await axios.get(`${baseUrl}/${id}`)).data;
+		}
+
+		if (!task) throw "Task doesn't exist";
 
 		return task;
 	} catch (e) {
 		console.error(e);
-		return errorMessage;
 	}
 };
 
 export const createTask = async (newTask: ITask) => {
 	try {
 		const res = await (await axios.post(baseUrl, newTask)).data;
+
+		if (!LSData) throw errors.LS;
+
 		const tasksUpdated = LSDataParsed.concat(newTask);
-
-		if (!tasksUpdated) return;
-
 		updateLS(tasksUpdated);
 		return res;
 	} catch (e) {
 		console.error(e);
-		return errorMessage;
 	}
 };
 
 export const deleteTask = async (id: ITask['_id']) => {
 	try {
 		const res = await (await axios.delete(`${baseUrl}/${id}`)).data;
+
+		if (!LSData) throw errors.LS;
+
 		const tasksUpdated = LSDataParsed.filter((task: ITask) => task._id !== id);
-
-		if (!tasksUpdated) return;
-
 		updateLS(tasksUpdated);
 		return res;
 	} catch (e) {
 		console.error(e);
-		return errorMessage;
 	}
 };
 
@@ -82,7 +83,7 @@ export const completeTask = async (id: ITask['_id']) => {
 	try {
 		const res = await (await axios.put(`${baseUrl}/complete/${id}`)).data;
 
-		if (!LSData) return;
+		if (!LSData) throw errors.LS;
 
 		const tasksUpdated = LSDataParsed.map((task: ITask) => {
 			if (task._id === id) return { ...task, completed: true };
@@ -93,7 +94,6 @@ export const completeTask = async (id: ITask['_id']) => {
 		return res;
 	} catch (e) {
 		console.error(e);
-		return errorMessage;
 	}
 };
 
@@ -101,7 +101,7 @@ export const uncompleteTask = async (id: ITask['_id']) => {
 	try {
 		const res = await (await axios.put(`${baseUrl}/uncomplete/${id}`)).data;
 
-		if (!LSData) return;
+		if (!LSData) throw errors.LS;
 
 		const tasksUpdated = LSDataParsed.map((task: ITask) => {
 			if (task._id === id) return { ...task, completed: false };
@@ -112,6 +112,5 @@ export const uncompleteTask = async (id: ITask['_id']) => {
 		return res;
 	} catch (e) {
 		console.error(e);
-		return errorMessage;
 	}
 };

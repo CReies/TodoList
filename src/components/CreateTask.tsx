@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { toggleModal } from '../features/modal/modalSlice';
-import { addTask, resetNewTask, setNewTask } from '../features/tasks/tasksSlice';
+import {
+	addTask,
+	resetNewTask,
+	setNewTask,
+} from '../features/tasks/tasksSlice';
+import { v4 } from 'uuid';
 import { createTask } from '../services/taskServices';
-import { $ } from '../util/functions';
 import type { ChangeEvent, FormEvent } from 'react';
 import type { RootState } from '../store';
 
@@ -33,25 +36,18 @@ const CreateTask = () => {
 
 	// Posts the task
 	const submitCreateTask = (e: FormEvent) => {
+		const _id = v4();
 		e.preventDefault();
-		createTask(newTask);
-		dispatch(addTask(newTask))
-		dispatch(resetNewTask());
-		dispatch(toggleModal(!modalVisible));
+		try {
+			createTask({ ...newTask, _id });
+			dispatch(addTask({ ...newTask, _id }));
+		} catch (e) {
+			console.error(e);
+		} finally {
+			dispatch(resetNewTask());
+			dispatch(toggleModal(!modalVisible));
+		}
 	};
-
-	//! ToDo: is this necesary?
-	// After executed getMethod changes the state task.category (this is because it doesn't reload when the localStorage change)
-	useDidUpdateEffect(() => {
-		const name = 'category';
-		const input = $('#categoriesSelect') as HTMLInputElement | null;
-
-		if (!input) return;
-
-		const value = input.value;
-
-		dispatch(setNewTask({ name, value }));
-	}, [categories]);
 
 	// <select> input for the category
 	const selectCategory = (

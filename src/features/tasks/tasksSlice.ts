@@ -17,7 +17,7 @@ const initialState: TaskState = {
 		_id: v4(),
 		title: '',
 		description: '',
-		category: '',
+		category: '0',
 		completed: false,
 	},
 	data: [],
@@ -79,7 +79,7 @@ const taskSlice = createSlice({
 			return { ...state, newTask };
 		},
 
-		setSearch: (state, action: PayloadAction<TaskState["search"]>) => {
+		setSearch: (state, action: PayloadAction<TaskState['search']>) => {
 			const search = action.payload;
 			return { ...state, search };
 		},

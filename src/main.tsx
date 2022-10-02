@@ -6,9 +6,7 @@ import App from './App';
 import { $ } from './util/functions';
 
 ReactDOM.createRoot($('#root') as HTMLElement).render(
-	<React.StrictMode>
 		<Provider store={store}>
 			<App />
 		</Provider>
-	</React.StrictMode>
 );

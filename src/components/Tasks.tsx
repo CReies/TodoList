@@ -10,13 +10,16 @@ const Tasks = () => {
 	let tasksRender = <p>Loading...</p>;
 
 	if (!isLoading) {
-		tasksRender = (
-			<>
-				{tasks.map((task) => (
-					<Task key={task._id} task={task} />
-				))}
-			</>
-		);
+		if (tasks.length === 0) tasksRender = <>Create a new task</>;
+		else {
+			tasksRender = (
+				<>
+					{tasks.map((task) => (
+						<Task key={task._id} task={task} />
+					))}
+				</>
+			);
+		}
 	}
 
 	return <div className='tasks'>{tasksRender}</div>;
