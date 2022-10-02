@@ -31,10 +31,8 @@ const App = () => {
 			dispatch(toggleCategoriesLoading(false));
 		};
 
-		return () => {
-			fetchData();
-		};
-	}, []);
+		fetchData();
+	});
 
 	return (
 		<>

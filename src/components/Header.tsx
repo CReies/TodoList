@@ -21,8 +21,8 @@ const Header = () => {
 		dispatch(setSearch(target.value));
 	};
 
-	const handleOnClick = (e: MouseEvent) => {
-		dispatch(toggleModal(modalVisible));
+	const handleOnClick = () => {
+		dispatch(toggleModal(!modalVisible));
 	};
 
 	return (
@@ -44,7 +44,7 @@ const Header = () => {
 					icon={faPlus}
 					className='btn'
 					id='new-task'
-					onClick={(e) => handleOnClick(e)}
+					onClick={handleOnClick}
 				/>
 			</div>
 		</header>

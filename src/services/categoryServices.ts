@@ -8,7 +8,7 @@ const baseUrl = `${API_URL}/categories`;
 const LS = localStorage;
 const LSData = LS.getItem('categories') || false;
 
-let LSDataParsed: Array<ICategory>;
+let LSDataParsed: Categories;
 if (LSData) LSDataParsed = JSON.parse(LSData);
 
 const errorMessage = 'Something went wrong';

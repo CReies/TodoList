@@ -46,7 +46,7 @@ const Modal = (props: Props) => {
 							<Button
 								id='closeModal'
 								icon={faX}
-								onClick={() => dispatch(toggleModal(modal.visible))}
+								onClick={() => dispatch(toggleModal(!modal.visible))}
 								className='modal-close'
 							/>
 						</div>
