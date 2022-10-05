@@ -5,23 +5,22 @@ import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from './Button';
 import type { RootState } from '../store';
-import type { ChangeEvent, MouseEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 // Header Component
-const Header = () => {
+const Header = (): JSX.Element => {
 	const dispatch = useDispatch();
 
 	const modalVisible = useSelector((state: RootState) => state.modal.visible);
 	const search = useSelector((state: RootState) => state.tasks.search);
 
-	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleOnChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		const target = e.target;
-		if (!target) return;
 
 		dispatch(setSearch(target.value));
 	};
 
-	const handleOnClick = () => {
+	const handleOnClick = (): void => {
 		dispatch(toggleModal(!modalVisible));
 	};
 
@@ -37,15 +36,10 @@ const Header = () => {
 						id='search'
 						placeholder='Search'
 						value={search}
-						onChange={(e) => handleOnChange(e)}
+						onChange={e => handleOnChange(e)}
 					/>
 				</div>
-				<Button
-					icon={faPlus}
-					className='btn'
-					id='new-task'
-					onClick={handleOnClick}
-				/>
+				<Button icon={faPlus} className='btn' id='new-task' onClick={handleOnClick} />
 			</div>
 		</header>
 	);

@@ -12,13 +12,13 @@ interface Props {
 }
 
 // Button Component
-const Button = (props: Props) => {
+const Button = (props: Props): JSX.Element => {
 	const { icon, onClick, text, id, className, color } = props;
 
 	const buttonRender = (
 		<button onClick={onClick} id={id} className={className}>
-			{icon ? <FontAwesomeIcon icon={icon} color={color} /> : ''}
-			{text ? text : ''}
+			{icon != null ? <FontAwesomeIcon icon={icon} color={color} /> : ''}
+			{text ?? ''}
 		</button>
 	);
 

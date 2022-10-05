@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTasks, setTasksLoading } from './features/tasks/tasksSlice';
-import {
-	setCategories,
-	setCategoriesLoading,
-} from './features/categories/categoriesSlice';
+import { setCategories, setCategoriesLoading } from './features/categories/categoriesSlice';
 import { getAllTasks } from './services/taskServices';
 import { getAllCategories } from './services/categoryServices';
 import Header from './components/Header';
@@ -14,11 +11,11 @@ import Footer from './components/Footer';
 import 'normalize.css';
 import './assets/styles/styles.scss';
 
-const App = () => {
+const App = (): JSX.Element => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const fetchData = async function () {
+		const fetchData = async function (): Promise<void> {
 			localStorage.clear();
 			dispatch(setTasksLoading(true));
 			dispatch(setCategoriesLoading(true));
@@ -32,7 +29,7 @@ const App = () => {
 			dispatch(setCategoriesLoading(false));
 		};
 
-		fetchData();
+		void fetchData();
 	}, []);
 
 	return (

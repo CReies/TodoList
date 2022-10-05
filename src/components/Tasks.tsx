@@ -3,7 +3,7 @@ import Task from './Task';
 import type { RootState } from '../store';
 
 // Tasks Component
-const Tasks = () => {
+const Tasks = (): JSX.Element => {
 	const isLoading = useSelector((state: RootState) => state.tasks.isLoading);
 	const tasks = useSelector((state: RootState) => state.tasks.data);
 
@@ -14,7 +14,7 @@ const Tasks = () => {
 		else {
 			tasksRender = (
 				<>
-					{tasks.map((task) => (
+					{tasks.map(task => (
 						<Task key={task._id} task={task} />
 					))}
 				</>

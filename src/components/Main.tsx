@@ -7,7 +7,7 @@ import Tasks from './Tasks';
 import type { RootState } from '../store';
 
 // Main Component
-const Main = () => {
+const Main = (): JSX.Element => {
 	const dispatch = useDispatch();
 
 	const tabsValue = useSelector((state: RootState) => state.tabs.value);

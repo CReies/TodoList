@@ -6,7 +6,7 @@ export interface CategoriesState {
 	isLoading: boolean;
 	activeCategory: string;
 	newCategory: ICategory;
-	data: Array<ICategory>;
+	data: ICategory[];
 }
 
 const initialState: CategoriesState = {
@@ -25,7 +25,7 @@ const categorySlice = createSlice({
 	name: 'categories',
 	initialState,
 	reducers: {
-		setCategories: (state, action: PayloadAction<Array<ICategory>>) => {
+		setCategories: (state, action: PayloadAction<ICategory[]>) => {
 			const data = action.payload;
 			return { ...state, data };
 		},
@@ -36,9 +36,7 @@ const categorySlice = createSlice({
 		},
 
 		deleteCategory: (state, action: PayloadAction<ICategory['_id']>) => {
-			const data = state.data.filter(
-				(category) => category._id !== action.payload
-			);
+			const data = state.data.filter(category => category._id !== action.payload);
 			return { ...state, data };
 		},
 
@@ -56,22 +54,16 @@ const categorySlice = createSlice({
 			return { ...state, newCategory };
 		},
 
-		resetNewCategory: (state) => {
+		resetNewCategory: state => {
 			const newCategory = { ...initialState.newCategory };
 			return { ...state, newCategory };
 		},
 
-		setCategoriesLoading: (
-			state,
-			action: PayloadAction<CategoriesState['isLoading']>
-		) => {
+		setCategoriesLoading: (state, action: PayloadAction<CategoriesState['isLoading']>) => {
 			return { ...state, isLoading: action.payload };
 		},
 
-		setActiveCategory: (
-			state,
-			action: PayloadAction<CategoriesState['activeCategory']>
-		) => {
+		setActiveCategory: (state, action: PayloadAction<CategoriesState['activeCategory']>) => {
 			return { ...state, activeCategory: action.payload };
 		},
 	},

@@ -7,7 +7,7 @@ interface TaskState {
 	isLoading: boolean;
 	search: string;
 	newTask: ITask;
-	data: Array<ITask>;
+	data: ITask[];
 }
 
 const initialState: TaskState = {
@@ -38,7 +38,7 @@ const taskSlice = createSlice({
 		},
 
 		removeTask: (state, action: PayloadAction<ITask['_id']>) => {
-			const data = state.data.filter((task) => task._id !== action.payload);
+			const data = state.data.filter(task => task._id !== action.payload);
 			return { ...state, data };
 		},
 
@@ -47,7 +47,7 @@ const taskSlice = createSlice({
 			action: PayloadAction<{ id: ITask['_id']; completed: ITask['completed'] }>
 		) => {
 			const { id, completed } = action.payload;
-			const data = state.data.map((task) => {
+			const data = state.data.map(task => {
 				if (id === task._id) {
 					return { ...task, completed };
 				}
@@ -74,7 +74,7 @@ const taskSlice = createSlice({
 			return { ...state, newTask };
 		},
 
-		resetNewTask: (state) => {
+		resetNewTask: state => {
 			const newTask = { ...initialState.newTask };
 			return { ...state, newTask };
 		},

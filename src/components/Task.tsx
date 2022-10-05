@@ -1,11 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { removeTask, setCompleteTask } from '../features/tasks/tasksSlice';
-import {
-	completeTask,
-	deleteTask,
-	uncompleteTask,
-} from '../services/taskServices';
+import { completeTask, deleteTask, uncompleteTask } from '../services/taskServices';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
 import type { ITask } from '../util/types';
@@ -16,7 +12,7 @@ interface Props {
 }
 
 // Task Component
-const Task = (props: Props) => {
+const Task = (props: Props): JSX.Element => {
 	const {
 		task: { _id, title, description, completed, category },
 	} = props;
@@ -24,27 +20,24 @@ const Task = (props: Props) => {
 	const dispatch = useDispatch();
 
 	const search = useSelector((state: RootState) => state.tasks.search);
-	const activeCategory = useSelector(
-		(state: RootState) => state.categories.activeCategory
-	);
+	const activeCategory = useSelector((state: RootState) => state.categories.activeCategory);
 
 	const categoryIsActive = activeCategory === '' || activeCategory === category;
-	const includesSearch =
-		search === '' || title.includes(search) || description.includes(search);
+	const includesSearch = search === '' || title.includes(search) || description.includes(search);
 
-	const handleDelete = () => {
+	const handleDelete = (): void => {
 		dispatch(removeTask(_id));
-		deleteTask(_id);
+		void deleteTask(_id);
 	};
 
-	const handleComplete = () => {
+	const handleComplete = (): void => {
 		dispatch(setCompleteTask({ id: _id, completed: !completed }));
-		completeTask(_id);
+		void completeTask(_id);
 	};
 
 	useDidUpdateEffect(() => {
-		if (completed) completeTask(_id);
-		if (!completed) uncompleteTask(_id);
+		if (completed) void completeTask(_id);
+		if (!completed) void uncompleteTask(_id);
 	}, [completed]);
 
 	let taskRender = <></>;

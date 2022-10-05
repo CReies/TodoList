@@ -11,21 +11,15 @@ import type { ChangeEvent, FormEvent } from 'react';
 import type { RootState } from '../store';
 
 // Create Category Form
-const CreateCategory = () => {
+const CreateCategory = (): JSX.Element => {
 	const dispatch = useDispatch();
 
-	const newCategory = useSelector(
-		(state: RootState) => state.categories.newCategory
-	);
+	const newCategory = useSelector((state: RootState) => state.categories.newCategory);
 	const modalVisible = useSelector((state: RootState) => state.modal.visible);
 
 	// Dynamically changes the state when a input is modified
-	const handleOnChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
+	const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
 		const target = e.target;
-
-		if (!target) return;
 
 		const name = target.name;
 		const value = target.value;
@@ -33,11 +27,11 @@ const CreateCategory = () => {
 	};
 
 	// Posts the category
-	const submitCreateCategory = (e: FormEvent) => {
+	const submitCreateCategory = (e: FormEvent): void => {
 		const _id = v4();
 		e.preventDefault();
 		try {
-			createCategory({ ...newCategory, _id });
+			void createCategory({ ...newCategory, _id });
 			dispatch(addCategory({ ...newCategory, _id }));
 		} catch (e) {
 			console.error(e);
@@ -50,7 +44,7 @@ const CreateCategory = () => {
 	// Final Render
 	return (
 		<>
-			<form id='createCategory' onSubmit={(e) => submitCreateCategory(e)}>
+			<form id='createCategory' onSubmit={e => submitCreateCategory(e)}>
 				<div className='form-group'>
 					<input
 						type='text'
@@ -58,7 +52,7 @@ const CreateCategory = () => {
 						id='categoryTitle'
 						required
 						value={newCategory.title}
-						onChange={(e) => handleOnChange(e)}
+						onChange={e => handleOnChange(e)}
 						autoComplete='off'
 					/>
 					<span className='bar'></span>
@@ -71,7 +65,7 @@ const CreateCategory = () => {
 						id='categoryColor'
 						required
 						value={newCategory.color}
-						onChange={(e) => handleOnChange(e)}
+						onChange={e => handleOnChange(e)}
 						autoComplete='off'
 					/>
 					<span className='bar'></span>
@@ -83,7 +77,7 @@ const CreateCategory = () => {
 						id='categoryDescription'
 						required={false}
 						value={newCategory.description}
-						onChange={(e) => handleOnChange(e)}
+						onChange={e => handleOnChange(e)}
 					/>
 					<span className='bar'></span>
 					<label htmlFor='description'>Description</label>

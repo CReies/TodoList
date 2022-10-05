@@ -12,6 +12,6 @@ export interface ICategory {
 	title: string;
 	description?: string;
 	color: string;
-	tasks: Array<Task>;
+	tasks: Task[];
 	createdAt?: Date;
 }

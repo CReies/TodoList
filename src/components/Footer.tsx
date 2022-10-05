@@ -1,5 +1,5 @@
-//Footer component
-const Footer = () => {
+// Footer component
+const Footer = (): JSX.Element => {
 	return <footer>Footer</footer>;
 };
 

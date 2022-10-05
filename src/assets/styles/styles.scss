@@ -17,8 +17,7 @@ $border-dark: #515151 $border;
 	}
 
 	&:hover {
-		box-shadow: inset calc($scale * 1px) calc($scale * 1px) calc($scale * 3px)
-				#c5c5c5,
+		box-shadow: inset calc($scale * 1px) calc($scale * 1px) calc($scale * 3px) #c5c5c5,
 			inset calc($scale * -1px) calc($scale * -1px) calc($scale * 3px) #fff;
 	}
 }

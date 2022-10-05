@@ -1,33 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal } from '../features/modal/modalSlice';
-import {
-	addTask,
-	resetNewTask,
-	setNewTask,
-} from '../features/tasks/tasksSlice';
+import { addTask, resetNewTask, setNewTask } from '../features/tasks/tasksSlice';
 import { v4 } from 'uuid';
 import { createTask } from '../services/taskServices';
 import type { ChangeEvent, FormEvent } from 'react';
 import type { RootState } from '../store';
 
 // Create Task Form
-const CreateTask = () => {
+const CreateTask = (): JSX.Element => {
 	const dispatch = useDispatch();
 
 	const newTask = useSelector((state: RootState) => state.tasks.newTask);
 	const categories = useSelector((state: RootState) => state.categories.data);
 	const modalVisible = useSelector((state: RootState) => state.modal.visible);
-	const isLoading = useSelector(
-		(state: RootState) => state.categories.isLoading
-	);
+	const isLoading = useSelector((state: RootState) => state.categories.isLoading);
 
 	// Dynamically changes the state when a input is modified
 	const handleOnChange = (
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-	) => {
+	): void => {
 		const target = e.target;
-
-		if (!target) return;
 
 		const name = target.name;
 		const value = target.value;
@@ -35,11 +27,11 @@ const CreateTask = () => {
 	};
 
 	// Posts the task
-	const submitCreateTask = (e: FormEvent) => {
+	const submitCreateTask = (e: FormEvent): void => {
 		const _id = v4();
 		e.preventDefault();
 		try {
-			createTask({ ...newTask, _id });
+			void createTask({ ...newTask, _id });
 			dispatch(addTask({ ...newTask, _id }));
 		} catch (e) {
 			console.error(e);
@@ -55,12 +47,11 @@ const CreateTask = () => {
 			name='category'
 			id='categoriesSelect'
 			value={newTask.category}
-			onChange={(e) => handleOnChange(e)}
-		>
+			onChange={e => handleOnChange(e)}>
 			{isLoading ? (
 				<option value='Loading'>Loading</option>
 			) : (
-				categories.map((category) => (
+				categories.map(category => (
 					<option key={category._id} value={category._id}>
 						{category.title}
 					</option>
@@ -72,7 +63,7 @@ const CreateTask = () => {
 	// Final Render
 	return (
 		<>
-			<form id='createTask' onSubmit={(e) => submitCreateTask(e)}>
+			<form id='createTask' onSubmit={e => submitCreateTask(e)}>
 				<div className='form-group'>
 					<input
 						type='text'
@@ -80,7 +71,7 @@ const CreateTask = () => {
 						id='taskTitle'
 						required
 						value={newTask.title}
-						onChange={(e) => handleOnChange(e)}
+						onChange={e => handleOnChange(e)}
 						autoComplete='off'
 					/>
 					<span className='bar'></span>
@@ -93,7 +84,7 @@ const CreateTask = () => {
 						id='taskDescription'
 						required={false}
 						value={newTask.description}
-						onChange={(e) => handleOnChange(e)}
+						onChange={e => handleOnChange(e)}
 					/>
 					<span className='bar'></span>
 					<label htmlFor='description'>Description</label>

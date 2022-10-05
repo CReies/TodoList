@@ -12,7 +12,7 @@ interface Props {
 }
 
 // Modal Component
-const Modal = (props: Props) => {
+const Modal = (props: Props): JSX.Element => {
 	const { title } = props;
 	const dispatch = useDispatch();
 
@@ -40,17 +40,15 @@ const Modal = (props: Props) => {
 		modalRender = (
 			<div className={`modal-overlay showOverlay`}>
 				<div className={`modal showShadow`}>
-					{title && (
-						<div className='modal-header'>
-							<div className='modal-title'>{title}</div>
-							<Button
-								id='closeModal'
-								icon={faX}
-								onClick={() => dispatch(toggleModal(!modal.visible))}
-								className='modal-close'
-							/>
-						</div>
-					)}
+					<div className='modal-header'>
+						<div className='modal-title'>{title}</div>
+						<Button
+							id='closeModal'
+							icon={faX}
+							onClick={() => dispatch(toggleModal(!modal.visible))}
+							className='modal-close'
+						/>
+					</div>
 					<div className='modal-content'>{content}</div>
 				</div>
 			</div>

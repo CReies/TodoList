@@ -8,21 +8,20 @@ interface Props {
 }
 
 // Tabs Element
-const Tabs = (props: Props) => {
+const Tabs = (props: Props): JSX.Element => {
 	const { tabs } = props;
 	const dispatch = useDispatch();
 	const tabsValue = useSelector((state: RootState) => state.tabs.value);
 
-	const handleChangeTab = (value: TabsState['value']) => {
+	const handleChangeTab = (value: TabsState['value']): void => {
 		dispatch(setTabsValue(value));
 	};
 
-	const tabRender = tabs.map((localTabName) => (
+	const tabRender = tabs.map(localTabName => (
 		<span
 			key={localTabName}
 			className={localTabName === tabsValue ? 'active' : ''}
-			onClick={() => handleChangeTab(localTabName)}
-		>
+			onClick={() => handleChangeTab(localTabName)}>
 			{localTabName}
 		</span>
 	));

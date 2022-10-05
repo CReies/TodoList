@@ -2,21 +2,21 @@ import axios from 'axios';
 import { API_URL } from '../.env/config';
 import type { ICategory } from '../util/types';
 
-type Categories = Array<ICategory>;
+type Categories = ICategory[];
 
 const baseUrl = `${API_URL}/categories`;
 const LS = localStorage;
-const LSData = LS.getItem('categories') || false;
+const LSData = LS.getItem('categories');
 
 let LSDataParsed: Categories;
-if (LSData) LSDataParsed = JSON.parse(LSData);
+if (LSData != null) LSDataParsed = JSON.parse(LSData);
 
 enum errors {
 	LS = 'Local storage error',
 	Server = 'Internal server error',
 }
 
-const updateLS = (categories: Categories) => {
+const updateLS = (categories: Categories): void => {
 	try {
 		LS.setItem('categories', JSON.stringify(categories));
 	} catch (e) {
@@ -24,13 +24,13 @@ const updateLS = (categories: Categories) => {
 	}
 };
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (): Promise<Categories | undefined> => {
 	try {
-		if (LSData) return LSDataParsed;
+		if (LSData != null) return LSDataParsed;
 
-		const categories = await (await axios.get(baseUrl)).data;
+		const categories: Categories = await (await axios.get(baseUrl)).data;
 
-		if (!categories) throw errors.Server;
+		if (categories == null) throw Error(errors.Server);
 
 		updateLS(categories);
 		return categories;
@@ -39,16 +39,16 @@ export const getAllCategories = async () => {
 	}
 };
 
-export const getOneCategory = async (id: ICategory['_id']) => {
+export const getOneCategory = async (id: ICategory['_id']): Promise<ICategory | undefined> => {
 	try {
 		let category: ICategory | undefined;
-		if (LSData) {
-			category = LSDataParsed.find((category) => category._id === id);
+		if (LSData != null) {
+			category = LSDataParsed.find(category => category._id === id);
 		} else {
 			category = await (await axios.get(`${baseUrl}/${id}`)).data;
 		}
 
-		if (!category) throw "Category doesn't exist";
+		if (category == null) throw Error("Category doesn't exist");
 
 		return category;
 	} catch (e) {
@@ -56,11 +56,11 @@ export const getOneCategory = async (id: ICategory['_id']) => {
 	}
 };
 
-export const createCategory = async (newCategory: ICategory) => {
+export const createCategory = async (newCategory: ICategory): Promise<void> => {
 	try {
 		await axios.post(baseUrl, newCategory);
 
-		if (!LSData) throw errors.LS;
+		if (LSData == null) throw Error(errors.LS);
 
 		const categoriesUpdated = LSDataParsed.concat(newCategory);
 		updateLS(categoriesUpdated);
@@ -69,17 +69,14 @@ export const createCategory = async (newCategory: ICategory) => {
 	}
 };
 
-export const deleteCategory = async (id: ICategory['_id']) => {
+export const deleteCategory = async (id: ICategory['_id']): Promise<void> => {
 	try {
-		const res = await (await axios.delete(`${baseUrl}/${id}`)).data;
+		void axios.delete(`${baseUrl}/${id}`);
 
-		if (!LSData) throw errors.LS;
+		if (LSData == null) throw Error(errors.LS);
 
-		const categoriesUpdated = LSDataParsed.filter(
-			(category) => category._id !== id
-		);
+		const categoriesUpdated = LSDataParsed.filter(category => category._id !== id);
 		updateLS(categoriesUpdated);
-		return res;
 	} catch (e) {
 		console.error(e);
 	}
