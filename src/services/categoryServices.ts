@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../.env/config';
+import { emptyCategory } from '../util/consts';
 import type { ICategory } from '../util/types';
 
 type Categories = ICategory[];
@@ -24,7 +25,7 @@ const updateLS = (categories: Categories): void => {
 	}
 };
 
-export const getAllCategories = async (): Promise<Categories | undefined> => {
+export const getAllCategories = async (): Promise<Categories> => {
 	try {
 		if (LSData != null) return LSDataParsed;
 
@@ -36,10 +37,11 @@ export const getAllCategories = async (): Promise<Categories | undefined> => {
 		return categories;
 	} catch (e) {
 		console.error(e);
+		return [];
 	}
 };
 
-export const getOneCategory = async (id: ICategory['_id']): Promise<ICategory | undefined> => {
+export const getOneCategory = async (id: ICategory['_id']): Promise<ICategory> => {
 	try {
 		let category: ICategory | undefined;
 		if (LSData != null) {
@@ -53,6 +55,7 @@ export const getOneCategory = async (id: ICategory['_id']): Promise<ICategory | 
 		return category;
 	} catch (e) {
 		console.error(e);
+		return emptyCategory;
 	}
 };
 

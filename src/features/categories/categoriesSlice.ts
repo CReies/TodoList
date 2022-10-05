@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { emptyCategory } from '../../util/consts';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { ICategory } from '../../util/types';
 
@@ -12,12 +13,7 @@ export interface CategoriesState {
 const initialState: CategoriesState = {
 	isLoading: false,
 	activeCategory: '',
-	newCategory: {
-		_id: '',
-		title: '',
-		color: '#6e6e6e',
-		tasks: [],
-	},
+	newCategory: emptyCategory,
 	data: [],
 };
 
@@ -55,8 +51,7 @@ const categorySlice = createSlice({
 		},
 
 		resetNewCategory: state => {
-			const newCategory = { ...initialState.newCategory };
-			return { ...state, newCategory };
+			return { ...state, emptyCategory };
 		},
 
 		setCategoriesLoading: (state, action: PayloadAction<CategoriesState['isLoading']>) => {

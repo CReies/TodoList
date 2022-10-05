@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { API_URL } from '../.env/config';
-import { ITask } from '../util/types';
+import { emptyTask } from '../util/consts';
+import type { ITask } from '../util/types';
 
 type Tasks = ITask[];
 
@@ -8,7 +9,7 @@ const baseUrl = `${API_URL}/tasks`;
 const LS = localStorage;
 const LSData = LS.getItem('tasks');
 
-let LSDataParsed: Tasks;
+let LSDataParsed: Tasks | undefined;
 if (LSData != null) LSDataParsed = JSON.parse(LSData);
 
 enum errors {
@@ -20,24 +21,25 @@ const updateLS = (tasks: Tasks): void => {
 	LS.setItem('tasks', JSON.stringify(tasks));
 };
 
-export const getAllTasks = async (): Promise<Tasks | undefined> => {
+export const getAllTasks = async (): Promise<Tasks> => {
 	try {
-		if (LSData != null) return LSDataParsed;
-		const tasks = await (await axios.get(baseUrl)).data;
+		if (LSDataParsed != null) return LSDataParsed;
 
+		const tasks: Tasks = await (await axios.get(baseUrl)).data;
 		if (tasks == null) throw Error(errors.Server);
 
 		updateLS(tasks);
 		return tasks;
 	} catch (e) {
 		console.error(e);
+		return [];
 	}
 };
 
-export const getOneTask = async (id: ITask['_id']): Promise<ITask | undefined> => {
+export const getOneTask = async (id: ITask['_id']): Promise<ITask> => {
 	try {
 		let task: ITask | undefined;
-		if (LSData != null) {
+		if (LSDataParsed != null) {
 			task = LSDataParsed.find(task => task._id === id);
 		} else {
 			task = await (await axios.get(`${baseUrl}/${id}`)).data;
@@ -48,6 +50,7 @@ export const getOneTask = async (id: ITask['_id']): Promise<ITask | undefined> =
 		return task;
 	} catch (e) {
 		console.error(e);
+		return emptyTask;
 	}
 };
 
@@ -55,7 +58,7 @@ export const createTask = async (newTask: ITask): Promise<void> => {
 	try {
 		await axios.post(baseUrl, newTask);
 
-		if (LSData == null) throw Error(errors.LS);
+		if (LSDataParsed == null) throw Error(errors.LS);
 
 		const tasksUpdated = LSDataParsed.concat(newTask);
 		updateLS(tasksUpdated);
@@ -68,7 +71,7 @@ export const deleteTask = async (id: ITask['_id']): Promise<void> => {
 	try {
 		const res = await (await axios.delete(`${baseUrl}/${id}`)).data;
 
-		if (LSData == null) throw Error(errors.LS);
+		if (LSDataParsed == null) throw Error(errors.LS);
 
 		const tasksUpdated = LSDataParsed.filter((task: ITask) => task._id !== id);
 		updateLS(tasksUpdated);
@@ -82,7 +85,7 @@ export const completeTask = async (id: ITask['_id']): Promise<void> => {
 	try {
 		const res = await (await axios.put(`${baseUrl}/complete/${id}`)).data;
 
-		if (LSData == null) throw Error(errors.LS);
+		if (LSDataParsed == null) throw Error(errors.LS);
 
 		const tasksUpdated = LSDataParsed.map((task: ITask) => {
 			if (task._id === id) return { ...task, completed: true };
@@ -100,7 +103,7 @@ export const uncompleteTask = async (id: ITask['_id']): Promise<void> => {
 	try {
 		const res = await (await axios.put(`${baseUrl}/uncomplete/${id}`)).data;
 
-		if (LSData == null) throw Error(errors.LS);
+		if (LSDataParsed == null) throw Error(errors.LS);
 
 		const tasksUpdated = LSDataParsed.map((task: ITask) => {
 			if (task._id === id) return { ...task, completed: false };

@@ -7,7 +7,7 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"lint": "eslint --fix . --ext .ts,.tsx",
+		"lint": "eslint ./.eslintrc.cjs",
 		"format": "prettier --write ."
 	},
 	"dependencies": {

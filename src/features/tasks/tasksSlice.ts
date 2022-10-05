@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { v4 } from 'uuid';
+import { emptyTask } from '../../util/consts';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { ICategory, ITask } from '../../util/types';
 
@@ -13,13 +13,7 @@ interface TaskState {
 const initialState: TaskState = {
 	isLoading: false,
 	search: '',
-	newTask: {
-		_id: v4(),
-		title: '',
-		description: '',
-		category: '0',
-		completed: false,
-	},
+	newTask: emptyTask,
 	data: [],
 };
 
@@ -75,8 +69,7 @@ const taskSlice = createSlice({
 		},
 
 		resetNewTask: state => {
-			const newTask = { ...initialState.newTask };
-			return { ...state, newTask };
+			return { ...state, emptyTask };
 		},
 
 		setSearch: (state, action: PayloadAction<TaskState['search']>) => {
