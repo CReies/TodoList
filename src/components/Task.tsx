@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { removeTask, setCompleteTask } from '../features/tasks/tasksSlice';
 import { completeTask, deleteTask, uncompleteTask } from '../services/taskServices';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -32,13 +31,9 @@ const Task = (props: Props): JSX.Element => {
 
 	const handleComplete = (): void => {
 		dispatch(setCompleteTask({ id: _id, completed: !completed }));
-		void completeTask(_id);
-	};
-
-	useDidUpdateEffect(() => {
 		if (completed) void completeTask(_id);
 		if (!completed) void uncompleteTask(_id);
-	}, [completed]);
+	};
 
 	let taskRender = <></>;
 
