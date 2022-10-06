@@ -13,7 +13,7 @@ interface TaskState {
 const initialState: TaskState = {
 	isLoading: false,
 	search: '',
-	newTask: emptyTask,
+	newTask: { ...emptyTask },
 	data: [],
 };
 
@@ -69,7 +69,7 @@ const taskSlice = createSlice({
 		},
 
 		resetNewTask: state => {
-			return { ...state, emptyTask };
+			return { ...state, newTask: { ...emptyTask } };
 		},
 
 		setSearch: (state, action: PayloadAction<TaskState['search']>) => {

@@ -13,7 +13,7 @@ export interface CategoriesState {
 const initialState: CategoriesState = {
 	isLoading: false,
 	activeCategory: '',
-	newCategory: emptyCategory,
+	newCategory: { ...emptyCategory },
 	data: [],
 };
 
@@ -51,7 +51,7 @@ const categorySlice = createSlice({
 		},
 
 		resetNewCategory: state => {
-			return { ...state, emptyCategory };
+			return { ...state, newCategory: { ...emptyCategory } };
 		},
 
 		setCategoriesLoading: (state, action: PayloadAction<CategoriesState['isLoading']>) => {
