@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTasks, setTasksLoading } from './features/tasks/tasksSlice';
 import { setCategories, setCategoriesLoading } from './features/categories/categoriesSlice';
+import { LS } from './util/consts';
 import { getAllTasks } from './services/taskServices';
 import { getAllCategories } from './services/categoryServices';
 import Header from './components/Header';
@@ -16,7 +17,7 @@ const App = (): JSX.Element => {
 
 	useEffect(() => {
 		const fetchData = async function (): Promise<void> {
-			localStorage.clear();
+			LS.clear();
 			dispatch(setTasksLoading(true));
 			dispatch(setCategoriesLoading(true));
 
