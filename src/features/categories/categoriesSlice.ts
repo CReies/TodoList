@@ -31,7 +31,7 @@ const categorySlice = createSlice({
 			return { ...state, data };
 		},
 
-		deleteCategory: (state, action: PayloadAction<ICategory['_id']>) => {
+		removeCategory: (state, action: PayloadAction<ICategory['_id']>) => {
 			const data = state.data.filter(category => category._id !== action.payload);
 			return { ...state, data };
 		},
@@ -68,7 +68,7 @@ export default categorySlice.reducer;
 export const {
 	setCategories,
 	addCategory,
-	deleteCategory,
+	removeCategory,
 	setNewCategory,
 	resetNewCategory,
 	setCategoriesLoading,
