@@ -329,6 +329,37 @@ datalist#categories {
 	width: 100%;
 	max-width: 48em;
 	margin: 0 auto;
+
+	.tasks-completed,
+	.tasks-uncompleted {
+		margin: 4em 0;
+
+		h3 {
+			position: relative;
+			text-align: center;
+			width: 100%;
+
+			&::before {
+				content: '';
+				height: 1px;
+				width: 25%;
+				left: 20px;
+				bottom: 50%;
+				position: absolute;
+				background: #515151;
+			}
+			&::after {
+				content: '';
+				height: 1px;
+				width: 25%;
+				right: 20px;
+				bottom: 50%;
+				position: absolute;
+				background: #515151;
+			}
+		}
+	}
+
 	li.task {
 		border-bottom: $border-light;
 		margin-bottom: 1.25em;

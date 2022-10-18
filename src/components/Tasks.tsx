@@ -8,15 +8,42 @@ const Tasks = (): JSX.Element => {
 	const tasks = useSelector((state: RootState) => state.tasks.data);
 
 	let tasksRender = <p>Loading...</p>;
+	let tasksUncompleted;
+	let tasksCompleted;
 
 	if (!isLoading) {
 		if (tasks.length === 0) tasksRender = <>Create a new task</>;
 		else {
+			tasksUncompleted = (
+				<>
+					<div className='tasks-uncompleted'>
+						<h3>Uncompleted</h3>
+						{tasks
+							.filter(task => !task.completed)
+							.map(task => (
+								<Task key={task._id} task={task} />
+							))}
+					</div>
+				</>
+			);
+
+			tasksCompleted = (
+				<>
+					<div className='tasks-completed'>
+						<h3>Completed</h3>
+						{tasks
+							.filter(task => task.completed)
+							.map(task => (
+								<Task key={task._id} task={task} />
+							))}
+					</div>
+				</>
+			);
+
 			tasksRender = (
 				<>
-					{tasks.map(task => (
-						<Task key={task._id} task={task} />
-					))}
+					{tasksUncompleted}
+					{tasksCompleted}
 				</>
 			);
 		}
