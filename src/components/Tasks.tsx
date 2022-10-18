@@ -6,6 +6,7 @@ import type { RootState } from '../store';
 const Tasks = (): JSX.Element => {
 	const isLoading = useSelector((state: RootState) => state.tasks.isLoading);
 	const tasks = useSelector((state: RootState) => state.tasks.data);
+	const tasksSearch = useSelector((state: RootState) => state.tasks.search);
 
 	let tasksRender = <p>Loading...</p>;
 	let tasksUncompleted;
@@ -13,7 +14,15 @@ const Tasks = (): JSX.Element => {
 
 	if (!isLoading) {
 		if (tasks.length === 0) tasksRender = <>Create a new task</>;
-		else {
+		else if (tasksSearch !== '') {
+			tasksRender = (
+				<>
+					{tasks.map(task => (
+						<Task key={task._id} task={task} />
+					))}
+				</>
+			);
+		} else {
 			tasksUncompleted = (
 				<>
 					<div className='tasks-uncompleted'>
