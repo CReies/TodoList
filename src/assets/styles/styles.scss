@@ -6,6 +6,11 @@ $border-transparent: transparent $border;
 $border-light: #d3d3d3 $border;
 $border-dark: #515151 $border;
 
+@mixin normalize {
+	border: none;
+	background-color: transparent;
+}
+
 @mixin shadowed($scale) {
 	border: $border-transparent;
 	box-shadow: calc($scale * 3px) calc($scale * 3px) calc($scale * 6px) #c5c5c5,
@@ -67,11 +72,11 @@ header {
 
 	button {
 		display: initial;
-		background-color: transparent;
-		border: none;
 		color: $tertiary-color;
 		font-size: 1.7em;
 		margin: 0 0.25em;
+
+		@include normalize();
 	}
 
 	.input-group {
@@ -85,7 +90,7 @@ header {
 			line-height: 1.75em;
 			padding: 0 1em;
 			padding-left: 2.5em;
-			border: transparent $border;
+			border: $border-transparent;
 			border-radius: 0.2em;
 			outline: none;
 			width: 100%;
@@ -267,13 +272,13 @@ form {
 		input:not([type='color']),
 		textarea,
 		select {
+			@include normalize();
+
 			font-size: 1rem;
 			padding: 0.6em 0.6em 0.6em 0.3em;
 			display: block;
 			width: 100%;
-			border: none;
 			border-bottom: $border-dark;
-			background: transparent;
 			box-sizing: border-box;
 
 			&:focus {
@@ -295,7 +300,8 @@ form {
 		background: $tertiary-color;
 		width: fit-content;
 		align-self: flex-end;
-		border: transparent $border;
+		border: $border-transparent;
+
 		@include shadowed(2);
 	}
 }
@@ -310,9 +316,10 @@ datalist#categories {
 	width: 100%;
 
 	option {
-		background-color: transparent;
 		cursor: pointer;
 		border-bottom: $border-dark;
+
+		@include normalize();
 	}
 }
 /********************************************/
@@ -342,9 +349,9 @@ datalist#categories {
 		}
 
 		.delete-task {
-			background-color: transparent;
-			border: none;
 			color: #ee1414;
+
+			@include normalize();
 		}
 
 		.task-content {
@@ -374,8 +381,29 @@ aside {
 	color: #000;
 	justify-content: center;
 
-	h2 {
-		display: none;
+	.header {
+		margin-top: 2em;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.title {
+			h2 {
+				display: none;
+			}
+		}
+
+		.delete-mode-parent {
+			.delete-mode {
+				color: #000;
+
+				@include normalize();
+
+				&.active {
+					color: $primary-color;
+				}
+			}
+		}
 	}
 
 	.categories {
@@ -403,6 +431,16 @@ aside {
 				width: 1em;
 				height: 1em;
 				margin-right: 0.5em;
+			}
+
+			.delete-category {
+				width: 1em;
+				height: 1em;
+				margin-right: 0.5em;
+				justify-content: center;
+				align-items: center;
+
+				@include normalize();
 			}
 
 			@include shadowed(1);
@@ -434,10 +472,10 @@ aside {
 
 		button {
 			display: initial;
-			background-color: transparent;
-			border: none;
 			color: $tertiary-color;
 			font-size: 1.7em;
+
+			@include normalize();
 		}
 
 		.input-group:focus-within {
@@ -451,6 +489,14 @@ aside {
 		flex-direction: column;
 		justify-content: unset;
 
+		.header {
+			.title {
+				h2 {
+					display: unset;
+				}
+			}
+		}
+
 		.categories {
 			flex-direction: column;
 			overflow-x: unset;
@@ -459,10 +505,6 @@ aside {
 				padding: 0.6em 1.6em;
 				flex: auto;
 			}
-		}
-
-		h2 {
-			display: unset;
 		}
 	}
 

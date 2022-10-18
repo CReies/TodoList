@@ -8,6 +8,7 @@ export interface CategoriesState {
 	activeCategory: string;
 	newCategory: ICategory;
 	data: ICategory[];
+	activeDeleteMode: boolean;
 }
 
 const initialState: CategoriesState = {
@@ -15,6 +16,7 @@ const initialState: CategoriesState = {
 	activeCategory: '',
 	newCategory: { ...emptyCategory },
 	data: [],
+	activeDeleteMode: false,
 };
 
 const categorySlice = createSlice({
@@ -61,6 +63,10 @@ const categorySlice = createSlice({
 		setActiveCategory: (state, action: PayloadAction<CategoriesState['activeCategory']>) => {
 			return { ...state, activeCategory: action.payload };
 		},
+
+		setDeleteMode: (state, action: PayloadAction<boolean>) => {
+			return { ...state, activeDeleteMode: action.payload };
+		},
 	},
 });
 
@@ -73,4 +79,5 @@ export const {
 	resetNewCategory,
 	setCategoriesLoading,
 	setActiveCategory,
+	setDeleteMode,
 } = categorySlice.actions;

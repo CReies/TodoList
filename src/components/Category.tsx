@@ -1,13 +1,13 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCategory, setActiveCategory } from '../features/categories/categoriesSlice';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
-import { deleteCategory } from '../services/categoryServices';
-import { RootState } from '../store';
+import { removeCategory, setActiveCategory } from '../features/categories/categoriesSlice';
 import { $ } from '../util/functions';
-import type { ICategory } from '../util/types';
+import { deleteCategory } from '../services/categoryServices';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
+import type { MouseEvent } from 'react';
+import type { RootState } from '../store';
+import type { ICategory } from '../util/types';
 
 interface Props {
 	category: ICategory;
@@ -20,6 +20,7 @@ const Category = (props: Props): JSX.Element => {
 	} = props;
 
 	const activeCategoryId = useSelector((state: RootState) => state.categories.activeCategory);
+	const activeDeleteMode = useSelector((state: RootState) => state.categories.activeDeleteMode);
 
 	const dispatch = useDispatch();
 
@@ -43,22 +44,33 @@ const Category = (props: Props): JSX.Element => {
 		void deleteCategory(_id);
 	};
 
+	const categoryColor = !activeDeleteMode ? (
+		<div className='color' style={{ backgroundColor: `${color}` }}></div>
+	) : (
+		<></>
+	);
+
+	const deleteButton = activeDeleteMode ? (
+		<Button
+			id='deleteCategory'
+			className='delete-category'
+			onClick={handleDelete}
+			icon={faTrash}
+			color={color}
+		/>
+	) : (
+		<></>
+	);
+
 	return (
 		<>
 			<div
 				className={`category ${activeCategoryId === _id ? 'active' : ''}`}
 				id={`category-${_id}`}
 				onClickCapture={e => handleActiveCategory(e)}>
-				<div className='color' style={{ backgroundColor: `${color}` }}></div>
-				<div className='content'>
-					{title}
-					<Button
-						id='deleteCategory'
-						className='delete-category'
-						onClick={handleDelete}
-						icon={faTrash}
-					/>
-				</div>
+				{categoryColor}
+				{deleteButton}
+				<div className='content'>{title}</div>
 			</div>
 		</>
 	);

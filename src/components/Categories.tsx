@@ -1,11 +1,22 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDeleteMode } from '../features/categories/categoriesSlice';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Category from './Category';
+import Button from './Button';
 import type { RootState } from '../store';
 
 // Categories list component
 const Categories = (): JSX.Element => {
+	const dispatch = useDispatch();
+
 	const categories = useSelector((state: RootState) => state.categories.data);
 	const isLoading = useSelector((state: RootState) => state.categories.isLoading);
+	const activeDeleteMode = useSelector((state: RootState) => state.categories.activeDeleteMode);
+
+	const handleDeleteMode = () => {
+		if (activeDeleteMode) dispatch(setDeleteMode(false));
+		if (!activeDeleteMode) dispatch(setDeleteMode(true));
+	};
 
 	const categoriesRender = isLoading ? (
 		<p>Loading...</p>
@@ -13,7 +24,24 @@ const Categories = (): JSX.Element => {
 		categories.map(category => <Category category={category} key={category._id} />)
 	);
 
-	return <div className='categories'>{categoriesRender}</div>;
+	return (
+		<div className='categories'>
+			<div className='header'>
+				<div className='title'>
+					<h2>Categories</h2>
+				</div>
+				<div className='delete-mode-parent'>
+					<Button
+						className={`delete-mode ${activeDeleteMode ? 'active' : ''}`}
+						id='deleteCategoryMode'
+						icon={faTrash}
+						onClick={handleDeleteMode}
+					/>
+				</div>
+			</div>
+			{categoriesRender}
+		</div>
+	);
 };
 
 export default Categories;

@@ -4,7 +4,6 @@ import Categories from './Categories';
 const Aside = (): JSX.Element => {
 	return (
 		<aside>
-			<h2>Categories</h2>
 			<Categories />
 		</aside>
 	);
