@@ -18,6 +18,18 @@ const Categories = (): JSX.Element => {
 		if (!activeDeleteMode) dispatch(setDeleteMode(true));
 	};
 
+	const noCategories = categories.length === 0;
+	const removeCategoriesButtonRender = noCategories || (
+		<div className='delete-mode-parent'>
+			<Button
+				className={`delete-mode ${activeDeleteMode ? 'active' : ''}`}
+				id='deleteCategoryMode'
+				icon={faTrash}
+				onClick={handleDeleteMode}
+			/>
+		</div>
+	);
+
 	const categoriesRender = isLoading ? (
 		<p>Loading...</p>
 	) : (
@@ -30,14 +42,7 @@ const Categories = (): JSX.Element => {
 				<div className='title'>
 					<h2>Categories</h2>
 				</div>
-				<div className='delete-mode-parent'>
-					<Button
-						className={`delete-mode ${activeDeleteMode ? 'active' : ''}`}
-						id='deleteCategoryMode'
-						icon={faTrash}
-						onClick={handleDeleteMode}
-					/>
-				</div>
+				{removeCategoriesButtonRender}
 			</div>
 			{categoriesRender}
 		</div>
