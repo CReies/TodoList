@@ -4,8 +4,8 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"start:dev": "vite",
-		"start:preview": "vite preview",
+		"start:dev": "vite --port 8080",
+		"start:preview": "vite preview --port 8081",
 		"build": "tsc && vite build",
 		"lint": "eslint",
 		"format": "prettier -w ."
