@@ -5,7 +5,7 @@ import type { ITask } from '../util/types';
 
 type Tasks = ITask[];
 
-const { API_URL } = import.meta.env;
+const { VITE_API_URL: API_URL } = import.meta.env;
 const baseUrl = `${API_URL}/tasks`;
 let LSDataParsed: Tasks | undefined;
 
