@@ -7,7 +7,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
 import type { MouseEvent } from 'react';
 import type { RootState } from '../store';
-import type { ICategory } from '../util/types';
+import type { ICategory } from '../types/types';
 
 interface Props {
 	category: ICategory;
