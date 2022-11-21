@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useDidUpdateEffect } from '../hooks/useDidUpdateEffect';
 import { removeCategory, setActiveCategory } from '../features/categories/categoriesSlice';
 import { $ } from '../util/functions';
 import { deleteCategory } from '../services/categoryServices';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
 import type { MouseEvent } from 'react';
 import type { RootState } from '../store';

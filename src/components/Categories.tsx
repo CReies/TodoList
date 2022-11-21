@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setDeleteMode } from '../features/categories/categoriesSlice';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { setDeleteMode } from '../features/categories/categoriesSlice';
 import Category from './Category';
 import Button from './Button';
 import type { RootState } from '../store';
@@ -13,7 +13,7 @@ const Categories = (): JSX.Element => {
 	const isLoading = useSelector((state: RootState) => state.categories.isLoading);
 	const activeDeleteMode = useSelector((state: RootState) => state.categories.activeDeleteMode);
 
-	const handleDeleteMode = () => {
+	const handleDeleteMode = (): void => {
 		if (activeDeleteMode) dispatch(setDeleteMode(false));
 		if (!activeDeleteMode) dispatch(setDeleteMode(true));
 	};

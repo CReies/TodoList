@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 } from 'uuid';
 import { toggleModal } from '../features/modal/modalSlice';
 import { addTask, resetNewTask, setNewTask } from '../features/tasks/tasksSlice';
-import { v4 } from 'uuid';
 import { createTask } from '../services/taskServices';
 import type { ChangeEvent, FormEvent } from 'react';
 import type { RootState } from '../store';

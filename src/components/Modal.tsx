@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal } from '../features/modal/modalSlice';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { toggleModal } from '../features/modal/modalSlice';
 import Button from './Button';
 import CreateTask from './CreateTask';
 import CreateCategory from './CreateCategory';
-import type { RootState } from '../store';
 import type { ReactElement } from 'react';
+import type { RootState } from '../store';
 
 interface Props {
 	title: string | ReactElement;

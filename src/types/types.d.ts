@@ -15,3 +15,9 @@ export interface ICategory {
 	tasks: Task[];
 	createdAt?: Date;
 }
+
+export interface IUser {
+	_id: string;
+	username: string;
+	password: string;
+}

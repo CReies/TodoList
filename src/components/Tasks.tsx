@@ -28,7 +28,7 @@ const Tasks = (): JSX.Element => {
 					<div className='tasks-uncompleted'>
 						<h3>Uncompleted</h3>
 						{tasks
-							.filter(task => !task.completed)
+							.filter(task => task)
 							.map(task => (
 								<Task key={task._id} task={task} />
 							))}
@@ -41,7 +41,7 @@ const Tasks = (): JSX.Element => {
 					<div className='tasks-completed'>
 						<h3>Completed</h3>
 						{tasks
-							.filter(task => task.completed)
+							.filter(task => task.completed === false)
 							.map(task => (
 								<Task key={task._id} task={task} />
 							))}

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal } from '../features/modal/modalSlice';
-import { setSearch } from '../features/tasks/tasksSlice';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toggleModal } from '../features/modal/modalSlice';
+import { setSearch } from '../features/tasks/tasksSlice';
 import Button from './Button';
-import type { RootState } from '../store';
 import type { ChangeEvent } from 'react';
+import type { RootState } from '../store';
 
 // Header Component
 const Header = (): JSX.Element => {

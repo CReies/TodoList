@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { emptyTask } from '../util/consts';
 import { reloadLS, updateLS } from '../util/functions';
-import type { ITask } from '../util/types';
+import type { ITask } from '../types/types';
 
 type Tasks = ITask[];
 

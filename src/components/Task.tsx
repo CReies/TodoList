@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { removeTask, setCompleteTask } from '../features/tasks/tasksSlice';
 import { completeTask, deleteTask, uncompleteTask } from '../services/taskServices';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
 import type { ITask } from '../types/types';
 import type { RootState } from '../store';

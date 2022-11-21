@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 } from 'uuid';
 import { toggleModal } from '../features/modal/modalSlice';
 import { addCategory, resetNewCategory, setNewCategory } from '../features/categories/categoriesSlice';
-import { v4 } from 'uuid';
 import { createCategory } from '../services/categoryServices';
 import type { ChangeEvent, FormEvent } from 'react';
 import type { RootState } from '../store';
