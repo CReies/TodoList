@@ -16,9 +16,7 @@ const CreateTask = (): JSX.Element => {
 	const isLoading = useSelector((state: RootState) => state.categories.isLoading);
 
 	// Dynamically changes the state when a input is modified
-	const handleOnChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-	): void => {
+	const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
 		const target = e.target;
 
 		const name = target.name;
@@ -43,11 +41,7 @@ const CreateTask = (): JSX.Element => {
 
 	// <select> input for the category
 	const selectCategory = (
-		<select
-			name='category'
-			id='categoriesSelect'
-			value={newTask.category}
-			onChange={e => handleOnChange(e)}>
+		<select name='category' id='categoriesSelect' value={newTask.category} onChange={e => handleOnChange(e)}>
 			{isLoading ? (
 				<option value='Loading'>Loading</option>
 			) : (

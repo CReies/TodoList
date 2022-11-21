@@ -54,12 +54,7 @@ const Task = (props: Props): JSX.Element => {
 					<div className='description'>{description}</div>
 				</div>
 				<div className='delete-task'>
-					<Button
-						icon={faTrash}
-						className='delete-task'
-						id={`deleteTask-${_id}`}
-						onClick={handleDelete}
-					/>
+					<Button icon={faTrash} className='delete-task' id={`deleteTask-${_id}`} onClick={handleDelete} />
 				</div>
 			</li>
 		);

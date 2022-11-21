@@ -51,13 +51,7 @@ const Category = (props: Props): JSX.Element => {
 	);
 
 	const deleteButton = activeDeleteMode ? (
-		<Button
-			id='deleteCategory'
-			className='delete-category'
-			onClick={handleDelete}
-			icon={faTrash}
-			color={color}
-		/>
+		<Button id='deleteCategory' className='delete-category' onClick={handleDelete} icon={faTrash} color={color} />
 	) : (
 		<></>
 	);

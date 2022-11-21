@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { API_URL } from '../.env/config';
 import { emptyCategory } from '../util/consts';
 import { reloadLS, updateLS } from '../util/functions';
 import type { ICategory } from '../util/types';
 
 type Categories = ICategory[];
 
+const { API_URL } = import.meta.env;
 const baseUrl = `${API_URL}/categories`;
 let LSDataParsed: Categories | undefined;
 

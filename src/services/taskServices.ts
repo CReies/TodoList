@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { API_URL } from '../.env/config';
 import { emptyTask } from '../util/consts';
 import { reloadLS, updateLS } from '../util/functions';
 import type { ITask } from '../util/types';
 
 type Tasks = ITask[];
 
+const { API_URL } = import.meta.env;
 const baseUrl = `${API_URL}/tasks`;
 let LSDataParsed: Tasks | undefined;
 

@@ -36,10 +36,7 @@ const taskSlice = createSlice({
 			return { ...state, data };
 		},
 
-		setCompleteTask: (
-			state,
-			action: PayloadAction<{ id: ITask['_id']; completed: ITask['completed'] }>
-		) => {
+		setCompleteTask: (state, action: PayloadAction<{ id: ITask['_id']; completed: ITask['completed'] }>) => {
 			const { id, completed } = action.payload;
 			const data = state.data.map(task => {
 				if (id === task._id) {
@@ -80,13 +77,5 @@ const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-export const {
-	setTasks,
-	addTask,
-	removeTask,
-	setCompleteTask,
-	setTasksLoading,
-	setNewTask,
-	resetNewTask,
-	setSearch,
-} = taskSlice.actions;
+export const { setTasks, addTask, removeTask, setCompleteTask, setTasksLoading, setNewTask, resetNewTask, setSearch } =
+	taskSlice.actions;
