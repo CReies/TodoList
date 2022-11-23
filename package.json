@@ -7,7 +7,7 @@
 		"start:dev": "vite --port 8080",
 		"start:preview": "vite preview --port 8081",
 		"build": "tsc && vite build",
-		"lint": "eslint",
+		"lint": "eslint .",
 		"format": "prettier -w ."
 	},
 	"dependencies": {
