@@ -5,8 +5,8 @@ import { defineConfig, loadEnv, UserConfig } from 'vite';
 const config = ({ mode }: UserConfig) => {
 	process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 	return defineConfig({
-		plugins: [react()]
-	})
-}
+		plugins: [react()],
+	});
+};
 
-export default config
+export default config;

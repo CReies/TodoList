@@ -21,3 +21,9 @@ export interface IUser {
 	username: string;
 	password: string;
 }
+
+export interface LoginForm extends Omit<IUser, '_id'> {}
+
+export interface RegisterForm extends IUser {
+	passwordConfirm: string;
+}

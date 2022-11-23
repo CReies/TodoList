@@ -1,4 +1,5 @@
-import type { ICategory, ITask } from './types';
+import { LoginForm, RegisterForm } from '../types/types.d';
+import type { ICategory, ITask } from '../types/types';
 
 export const d = document;
 export const LS = localStorage;
@@ -16,4 +17,16 @@ export const emptyCategory: ICategory = {
 	title: '',
 	color: '#6e6e6e',
 	tasks: [],
+};
+
+export const emptyLogin: LoginForm = {
+	username: '',
+	password: '',
+};
+
+export const emptyRegister: RegisterForm = {
+	_id: '',
+	username: '',
+	password: '',
+	passwordConfirm: '',
 };

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { emptyCategory } from '../../util/consts';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { ICategory } from '../../util/types';
+import type { ICategory } from '../../types/types';
 
 export interface CategoriesState {
 	isLoading: boolean;
