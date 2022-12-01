@@ -5,19 +5,19 @@ import { setCategories, setCategoriesLoading } from '../features/categories/cate
 import { LS } from '../util/consts';
 import { getAllTasks } from '../services/taskServices';
 import { getAllCategories } from '../services/categoryServices';
-import Header from '../components/Header';
-import Aside from '../components/Aside';
-import Main from '../components/Main';
-import Footer from '../components/Footer';
-import 'normalize.css';
-import '../assets/styles/styles.scss';
+import Header from './Header';
+import Aside from './Aside';
+import Main from './Main';
+import Footer from './Footer';
 
 const Home = (): JSX.Element => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const fetchData = async function (): Promise<void> {
-			LS.clear();
+			LS.removeItem('tasks');
+			LS.removeItem('categories');
+
 			dispatch(setTasksLoading(true));
 			dispatch(setCategoriesLoading(true));
 

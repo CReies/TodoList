@@ -6,12 +6,14 @@ export interface AuthState {
 	logged: boolean;
 	registerForm: RegisterForm;
 	loginForm: LoginForm;
+	actualPage: 'login' | 'register';
 }
 
 const initialState: AuthState = {
 	logged: false,
 	registerForm: { ...emptyRegister },
 	loginForm: { ...emptyLogin },
+	actualPage: 'login',
 };
 
 const authSlice = createSlice({
@@ -22,16 +24,26 @@ const authSlice = createSlice({
 			const logged = action.payload;
 			return { ...state, logged };
 		},
-		setRegister: (state, action: PayloadAction<{ name: string; value: Partial<AuthState['registerForm']> }>) => {
-			const registerForm = { ...state.registerForm, [action.payload.name]: action.payload.value };
+		setRegister: (state, action: PayloadAction<Partial<AuthState['registerForm']>>) => {
+			const registerForm = { ...state.registerForm, ...action.payload };
 			return { ...state, registerForm };
 		},
-		setLogin: (state, action: PayloadAction<{ name: string; value: Partial<AuthState['loginForm']> }>) => {
-			const loginForm = { ...state.loginForm, [action.payload.name]: action.payload.value };
+		setLogin: (state, action: PayloadAction<Partial<AuthState['loginForm']>>) => {
+			const loginForm = { ...state.loginForm, ...action.payload };
 			return { ...state, loginForm };
+		},
+		resetRegister: state => {
+			return { ...state, registerForm: { ...emptyRegister } };
+		},
+		resetLogin: state => {
+			return { ...state, loginForm: { ...emptyLogin } };
+		},
+		setPage: (state, action: PayloadAction<AuthState['actualPage']>) => {
+			const actualPage = action.payload;
+			return { ...state, actualPage };
 		},
 	},
 });
 
 export default authSlice.reducer;
-export const { setLogged, setRegister, setLogin } = authSlice.actions;
+export const { setLogged, setRegister, setLogin, resetRegister, resetLogin, setPage } = authSlice.actions;

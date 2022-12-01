@@ -3,6 +3,7 @@ import tasksSlice from './features/tasks/tasksSlice';
 import modalSlice from './features/modal/modalSlice';
 import tabsSlice from './features/tabs/tabsSlice';
 import categoriesSlice from './features/categories/categoriesSlice';
+import authSlice from './features/auth/authSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
 		categories: categoriesSlice,
 		modal: modalSlice,
 		tabs: tabsSlice,
+		auth: authSlice,
 	},
 });
 

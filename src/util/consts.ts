@@ -25,7 +25,6 @@ export const emptyLogin: LoginForm = {
 };
 
 export const emptyRegister: RegisterForm = {
-	_id: '',
 	username: '',
 	password: '',
 	passwordConfirm: '',

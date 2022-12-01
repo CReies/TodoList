@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { emptyCategory } from '../util/consts';
+import { emptyCategory, LS } from '../util/consts';
 import { reloadLS, updateLS } from '../util/functions';
 import type { ICategory } from '../types/types';
 
 type Categories = ICategory[];
 
-const API_URL: string = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 const baseUrl = `${API_URL}/categories`;
 let LSDataParsed: Categories | undefined;
 
@@ -16,6 +16,9 @@ enum errors {
 
 const reloadLSCategories = (): void => {
 	LSDataParsed = reloadLS('categories');
+	const jwt = LS.getItem('jwt');
+	console.log(jwt);
+	if (jwt != null) axios.defaults.headers.common.Authorization = jwt;
 };
 
 const updateLSCategories = (categories: Categories): void => {
@@ -28,7 +31,9 @@ export const getAllCategories = async (): Promise<Categories> => {
 
 		if (LSDataParsed != null) return LSDataParsed;
 
-		const categories: Categories = await (await axios.get(baseUrl)).data;
+		const categories: Categories = await (
+			await axios.get(baseUrl, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } })
+		).data;
 
 		if (categories == null) throw Error(errors.Server);
 
@@ -47,7 +52,10 @@ export const getOneCategory = async (id: ICategory['_id']): Promise<ICategory> =
 		let category: ICategory | undefined;
 
 		if (LSDataParsed != null) category = LSDataParsed.find(category => category._id === id);
-		else category = await (await axios.get(`${baseUrl}/${id}`)).data;
+		else
+			category = await (
+				await axios.get(`${baseUrl}/${id}`, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } })
+			).data;
 
 		if (category == null) throw Error("Category doesn't exist");
 
@@ -61,7 +69,7 @@ export const getOneCategory = async (id: ICategory['_id']): Promise<ICategory> =
 export const createCategory = async (newCategory: ICategory): Promise<void> => {
 	try {
 		reloadLSCategories();
-		await axios.post(baseUrl, newCategory);
+		await axios.post(baseUrl, newCategory, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } });
 
 		if (LSDataParsed == null) throw Error(errors.LS);
 
@@ -75,7 +83,7 @@ export const createCategory = async (newCategory: ICategory): Promise<void> => {
 export const deleteCategory = async (id: ICategory['_id']): Promise<void> => {
 	try {
 		reloadLSCategories();
-		void axios.delete(`${baseUrl}/${id}`);
+		void axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } });
 
 		if (LSDataParsed == null) throw Error(errors.LS);
 

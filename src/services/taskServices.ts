@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { emptyTask } from '../util/consts';
-import { reloadLS, updateLS } from '../util/functions';
 import type { ITask } from '../types/types';
+import { emptyTask, LS } from '../util/consts';
+import { reloadLS, updateLS } from '../util/functions';
 
 type Tasks = ITask[];
 
@@ -28,7 +28,9 @@ export const getAllTasks = async (): Promise<Tasks> => {
 
 		if (LSDataParsed != null) return LSDataParsed;
 
-		const tasks: Tasks = await (await axios.get(baseUrl)).data;
+		const tasks: Tasks = await (
+			await axios.get(baseUrl, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } })
+		).data;
 
 		if (tasks == null) throw Error(errors.Server);
 
@@ -47,7 +49,10 @@ export const getOneTask = async (id: ITask['_id']): Promise<ITask> => {
 		let task: ITask | undefined;
 
 		if (LSDataParsed != null) task = LSDataParsed.find(task => task._id === id);
-		else task = await (await axios.get(`${baseUrl}/${id}`)).data;
+		else
+			task = await (
+				await axios.get(`${baseUrl}/${id}`, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } })
+			).data;
 
 		if (task == null) throw Error("Task doesn't exist");
 
@@ -61,7 +66,7 @@ export const getOneTask = async (id: ITask['_id']): Promise<ITask> => {
 export const createTask = async (newTask: ITask): Promise<void> => {
 	try {
 		reloadLSTasks();
-		await axios.post(baseUrl, newTask);
+		await axios.post(baseUrl, newTask, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } });
 
 		if (LSDataParsed == null) throw Error(errors.LS);
 
@@ -75,7 +80,7 @@ export const createTask = async (newTask: ITask): Promise<void> => {
 export const deleteTask = async (id: ITask['_id']): Promise<void> => {
 	try {
 		reloadLSTasks();
-		void axios.delete(`${baseUrl}/${id}`);
+		void axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } });
 
 		if (LSDataParsed == null) throw Error(errors.LS);
 
@@ -89,7 +94,7 @@ export const deleteTask = async (id: ITask['_id']): Promise<void> => {
 export const completeTask = async (id: ITask['_id']): Promise<void> => {
 	try {
 		reloadLSTasks();
-		void axios.put(`${baseUrl}/complete/${id}`);
+		void axios.put(`${baseUrl}/complete/${id}`, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } });
 
 		if (LSDataParsed == null) throw Error(errors.LS);
 
@@ -107,7 +112,7 @@ export const completeTask = async (id: ITask['_id']): Promise<void> => {
 export const uncompleteTask = async (id: ITask['_id']): Promise<void> => {
 	try {
 		reloadLSTasks();
-		void axios.put(`${baseUrl}/uncomplete/${id}`);
+		void axios.put(`${baseUrl}/uncomplete/${id}`, { headers: { Authorization: `Bearer ${LS.getItem('jwt') ?? ''}` } });
 
 		if (LSDataParsed == null) throw Error(errors.LS);
 
