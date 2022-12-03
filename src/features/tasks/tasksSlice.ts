@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { emptyTask } from '../../util/consts';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { ICategory, ITask } from '../../util/types';
+import type { ICategory, ITask } from '../../types/types';
 
 interface TaskState {
 	isLoading: boolean;

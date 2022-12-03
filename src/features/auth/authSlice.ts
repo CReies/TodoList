@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { LoginForm, RegisterForm } from '../../types/types.d';
+import type { LoginForm, RegisterForm } from '../../types/types.d';
 import { emptyLogin, emptyRegister } from '../../util/consts';
 export interface AuthState {
 	logged: boolean;

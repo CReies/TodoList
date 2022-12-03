@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LoginForm, RegisterForm } from '../types/types';
+import type { LoginForm, RegisterForm } from '../types/types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const baseUrl = `${API_URL}/auth`;
